@@ -34,6 +34,7 @@ export function ListPage(props: PageProps) {
       <View style={styles.pageContainer}>
         <TouchableOpacity
           style={styles.startButton}
+          accessibilityLabel="Clique aqui para voltar ao menu principal"
           onPress={() => {
             props.navigation.goBack();
           }}
@@ -106,6 +107,7 @@ export function ListPage(props: PageProps) {
           {pageNumber !== 1 ? (
             <TouchableOpacity
               style={styles.pageBackButton}
+              accessibilityLabel="Clique aqui para ir para a página anterior da listagem"
               onPress={() => {
                 setPageNumber(pageNumber - 1);
               }}
@@ -123,6 +125,7 @@ export function ListPage(props: PageProps) {
           {pageNumber !== totalPages ? (
             <TouchableOpacity
               style={styles.pageNextButton}
+              accessibilityLabel="Clique aqui para ir para a próxima página da listagem"
               onPress={() => {
                 setPageNumber(pageNumber + 1);
               }}

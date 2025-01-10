@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { PageProps } from "../../types/PageProps";
-import { AccessibilityInfo, Text, TouchableOpacity, View, Platform  } from "react-native";
+import { AccessibilityInfo, Text, TouchableOpacity, View  } from "react-native";
 import styles from "./CardScannerPageStyles";
 import { getCardByCode } from "../../utils/getCardByCode";
 import { CardInterface } from "../../types/CardInterface";
@@ -38,7 +38,7 @@ export function CardScannerPage(props: PageProps) {
           accessibilityLabel="Clique aqui para permitir que o aplicativo acesse sua câmera"
           onPress={async () => {
             const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
+            setHasPermission(status === 'granted');
           }}
         >
           <Text style={styles.cardButtonText}>Conceder permissão</Text>
@@ -52,6 +52,7 @@ export function CardScannerPage(props: PageProps) {
       <View style={styles.pageContainer}>
         <TouchableOpacity
           style={styles.startButton}
+          accessibilityLabel="Clique aqui para voltar ao menu principal"
           onPress={() => {
             if(scanned) {
               setScanned(false); 

@@ -39,6 +39,7 @@ export function HomePage(props: PageProps) {
                     <View style={{width: "100%"}}>
                         <TouchableOpacity 
                             style={styles.startButton}
+                            accessibilityLabel="Clique aqui para ir para a lista de cartas"
                             onPress={()=>{
                                 props.navigation.navigate("ListPage");
                             }}
@@ -47,6 +48,7 @@ export function HomePage(props: PageProps) {
                         </TouchableOpacity>
                         <TouchableOpacity 
                             style={styles.startButton}
+                            accessibilityLabel="Clique aqui para ir para o scanner de cartas"
                             onPress={()=>{
                                 props.navigation.navigate("CardScannerPage");
                             }}
