@@ -10,11 +10,11 @@ export function formatCardData(cardList: Record<string, unknown>[]) {
             description: card.desc,
             atk: card.atk,
             def: card.def,
-            level: card.level,
+            level: card.level ? card.level.toString() : undefined,
             race: card.race,
             attribute: card.attribute,
             scale: card.scale, 
-            linkRate: card.linkval,
+            linkRate: card.linkval ? card.linkval.toString() : undefined,
             linkMarkers: formatLinkMarkersLabel(card.linkMarkers as string[]),
         } as CardInterface;
     });

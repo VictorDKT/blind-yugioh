@@ -1,25 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
-import { PageProps } from "../../types/PageProps";
-import { AccessibilityInfo, Text, TouchableOpacity, View  } from "react-native";
-import styles from "./CardScannerPageStyles";
+import { ScreenProps } from "../../types/ScreenProps";
+import { AccessibilityInfo, Text, View } from "react-native";
 import { getCardByCode } from "../../utils/getCardByCode";
 import { CardInterface } from "../../types/CardInterface";
-import { cardTypeMap } from "../../utils/labelMaps";
+import { cardTypeMap } from "../../utils/consts";
 import ViewShot from "react-native-view-shot";
 import QRCode from "react-native-qrcode-svg";
 import { saveQRCodeImage } from "../../utils/saveQrCodeImage";
 import { Camera, CameraView } from 'expo-camera';
+import { Button } from "../../components/Button/Button";
+import styles from "./CardScannerScreenStyles";
 
-export function CardScannerPage(props: PageProps) {
+export function CardScannerScreen(props: ScreenProps) {
   const [loading, setLoading] = useState(true);
   const [hasPermission, setHasPermission] = useState<boolean>();
   const [scanned, setScanned] = useState(false);
-  const qrRef = useRef<ViewShot | null>();
   const [entity, setEntity] = useState<CardInterface | null>();
+  const qrRef = useRef<ViewShot | null>();
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
-      const {status} = await await Camera.requestCameraPermissionsAsync();
+      const { status } = await await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === 'granted');
     };
 
@@ -33,16 +34,14 @@ export function CardScannerPage(props: PageProps) {
           Para scannear uma carta é necessário permitir que o aplicativo acesse
           sua câmera
         </Text>
-        <TouchableOpacity
-          style={styles.cardButton}
-          accessibilityLabel="Clique aqui para permitir que o aplicativo acesse sua câmera"
-          onPress={async () => {
+        <Button
+          label={"Conceder permissão"}
+          accessibilityLabel={"Clique aqui para permitir que o aplicativo acesse sua câmera"}
+          callback={async () => {
             const { status } = await Camera.requestCameraPermissionsAsync();
             setHasPermission(status === 'granted');
           }}
-        >
-          <Text style={styles.cardButtonText}>Conceder permissão</Text>
-        </TouchableOpacity>
+        />
       </View>
     );
   }
@@ -50,10 +49,10 @@ export function CardScannerPage(props: PageProps) {
   return (
     <View style={styles.page}>
       <View style={styles.pageContainer}>
-        <TouchableOpacity
-          style={styles.startButton}
-          accessibilityLabel="Clique aqui para voltar ao menu principal"
-          onPress={() => {
+        <Button
+          label={"Voltar"}
+          accessibilityLabel={"Clique aqui para voltar ao menu principal"}
+          callback={() => {
             if(scanned) {
               setScanned(false); 
               setEntity(null);
@@ -61,9 +60,7 @@ export function CardScannerPage(props: PageProps) {
               props.navigation.goBack();
             }
           }}
-        >
-          <Text style={styles.startButtonText}>Voltar</Text>
-        </TouchableOpacity>
+        />
         {scanned && entity ? (
           <View style={styles.cardDataContainer} key={entity.cardCode}>
             <Text style={styles.cardDataText}>Nome: {entity.name}</Text>
@@ -99,24 +96,21 @@ export function CardScannerPage(props: PageProps) {
                 backgroundColor="white"
               />
             </ViewShot>
-            <TouchableOpacity
-              style={styles.cardButton}
-              accessibilityLabel="Clique aqui para ouvir o texto da carta"
-              onPress={() => {
+            <Button
+              label={"Efeito"}
+              accessibilityLabel={"Clique aqui para ouvir o texto da carta"}
+              callback={() => {
                 AccessibilityInfo.announceForAccessibility(entity.description);
               }}
-            >
-              <Text style={styles.cardButtonText}>Efeito</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{ ...styles.cardButton, marginBottom: 0 }}
-              accessibilityLabel="Clique aqui para gerar o QR Code da carta"
-              onPress={() => {
+            />
+            <Button
+              label={"Gerar QR Code"}
+              accessibilityLabel={"Clique aqui para gerar o QR Code da carta"}
+              aditionalStyles={{marginBottom: 0}}
+              callback={() => {
                 saveQRCodeImage(qrRef.current, entity.name);
               }}
-            >
-              <Text style={styles.cardButtonText}>Gerar QR Code</Text>
-            </TouchableOpacity>
+            />
           </View>
         ) : (
           <View style={{height: 300, width: "100%"}}>

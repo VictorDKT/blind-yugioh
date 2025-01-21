@@ -4,12 +4,12 @@ const styles = StyleSheet.create({
     page: {
         width: "100%",
         height: "100%",
-        
     },
 
     pageContainer: {
         width: "100%",
         padding: 20,
+        height: "100%",
     },
 
     startButton: {
@@ -122,6 +122,13 @@ const styles = StyleSheet.create({
         right: -500,
         padding: 10,
         backgroundColor: "white",
+    },
+
+    pageTitle: {
+        fontFamily: "Roboto-Bold",
+        fontSize: 25,
+        marginTop: 10,
+        marginBottom: 10,
     },
 })
 

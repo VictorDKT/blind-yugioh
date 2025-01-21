@@ -2,9 +2,10 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from '@react-navigation/stack';
 import { navigationRef } from './RootNavigation';
-import { ListPage } from "../pages/ListPage/ListPage";
-import { HomePage } from "../pages/HomePage/HomePage";
-import { CardScannerPage } from "../pages/CardScannerPage/CardScannerPage";
+import { ListScreen } from "../screens/ListScreen/ListScreen";
+import { HomeScreen } from "../screens/HomeScreen/HomeScreen";
+import { CardScannerScreen } from "../screens/CardScannerScreen/CardScannerScreen";
+import { DuelConfigScreen } from "../screens/DuelConfigScreen/DuelConfigScreen";
 
 const Stack = createStackNavigator();
 
@@ -14,9 +15,10 @@ type Route = {
 }
 
 const routes: Route[] = [
-    { name: "HomePage", component: HomePage },
-    { name: "ListPage", component: ListPage },
-    { name: "CardScannerPage", component: CardScannerPage },
+    { name: "HomeScreen", component: HomeScreen },
+    { name: "ListScreen", component: ListScreen },
+    { name: "CardScannerScreen", component: CardScannerScreen },
+    { name: "DuelConfigScreen", component: DuelConfigScreen },
 ];
 
 function AppStack() {

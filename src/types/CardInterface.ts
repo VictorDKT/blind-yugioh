@@ -6,10 +6,10 @@ export interface CardInterface {
     description: string,
     atk: number,
     def?: number,
-    level?: number,
+    level?: string,
     race: string,
     attribute: string,
     scale?: number, 
-    linkRate?: number,
+    linkRate?: string,
     linkMarkers?: string[],
 }
