@@ -8,11 +8,11 @@ import { formatArrayToSentence } from "../../utils/formatArrayToSentence";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function DuelConfigScreen(props: ScreenProps) {
-    const [duelData, setDuelData] = useState<Record<string, string>>({
-        player1Name: "Jogador 1",
-        player2Name: "Jogador 2",
-        initialLp: "8000",
-    });
+  const [duelData, setDuelData] = useState<Record<string, string>>({
+    player1Name: "Jogador 1",
+    player2Name: "Jogador 2",
+    initialLp: "8000",
+  });
 
   return (
     <View style={styles.page}>
@@ -31,7 +31,7 @@ export function DuelConfigScreen(props: ScreenProps) {
           acessibilityLabel={"Digite o nome do primeiro jogador"}
           defaultValue={duelData.player1Name as string}
           callback={(value) => {
-            const newDuelData = {...duelData};
+            const newDuelData = { ...duelData };
             newDuelData["player1Name"] = value;
             setDuelData(newDuelData);
           }}
@@ -43,7 +43,7 @@ export function DuelConfigScreen(props: ScreenProps) {
           acessibilityLabel={"Digite o nome do segundo jogador"}
           defaultValue={duelData.player2Name as string}
           callback={(value) => {
-            const newDuelData = {...duelData};
+            const newDuelData = { ...duelData };
             newDuelData["player2Name"] = value;
             setDuelData(newDuelData);
           }}
@@ -54,7 +54,7 @@ export function DuelConfigScreen(props: ScreenProps) {
           acessibilityLabel={"Digite a quantidade de pontos de vida inicial"}
           defaultValue={duelData.initialLp as string}
           callback={(value) => {
-            const newDuelData = {...duelData};
+            const newDuelData = { ...duelData };
             newDuelData["initialLp"] = value;
             setDuelData(newDuelData);
           }}
@@ -65,23 +65,32 @@ export function DuelConfigScreen(props: ScreenProps) {
           callback={() => {
             const missingFields: string[] = [];
             const fieldsNameMap: Record<string, string> = {
-                player1Name: "Nome do jogador 1",
-                player2Name: "Nome do jogador 2",
-                initialLp: "Pontos de vida iniciais",
+              player1Name: "Nome do jogador 1",
+              player2Name: "Nome do jogador 2",
+              initialLp: "Pontos de vida iniciais",
             };
 
-            Object.keys(duelData).forEach(key=>{
-                if(!duelData[key] || (duelData[key] && duelData[key].length === 0)) {
-                    missingFields.push(fieldsNameMap[key]);
-                }
+            Object.keys(duelData).forEach((key) => {
+              if (
+                !duelData[key] ||
+                (duelData[key] && duelData[key].length === 0)
+              ) {
+                missingFields.push(fieldsNameMap[key]);
+              }
             });
 
-            if(missingFields.length > 0) {
-                AccessibilityInfo.announceForAccessibility("Os campos " + formatArrayToSentence(missingFields)+" não foram informados. Por favor insira as informações e tente novamente.");
+            if (missingFields.length > 0) {
+              AccessibilityInfo.announceForAccessibility(
+                "Os campos " +
+                  formatArrayToSentence(missingFields) +
+                  " não foram informados. Por favor insira as informações e tente novamente."
+              );
             } else {
-                AsyncStorage.setItem("duelData", JSON.stringify(duelData)).then(()=>{
-                    props.navigation.navigate("DuelScreen");
-                });
+              AsyncStorage.setItem("duelData", JSON.stringify(duelData)).then(
+                () => {
+                  props.navigation.navigate("DuelScreen");
+                }
+              );
             }
           }}
         />

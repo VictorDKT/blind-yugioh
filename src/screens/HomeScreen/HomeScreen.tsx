@@ -41,7 +41,7 @@ export function HomeScreen(props: ScreenProps) {
           <Button
             aditionalStyles={{ fontSize: 20 }}
             label={"Duelo"}
-            accessibilityLabel={"Clique aqui para iniciar um duelo"}
+            accessibilityLabel={"Clique aqui para ir à tela de duelo"}
             callback={() => {
               props.navigation.navigate("DuelConfigScreen");
             }}
@@ -49,7 +49,7 @@ export function HomeScreen(props: ScreenProps) {
           <Button
             aditionalStyles={{ fontSize: 20 }}
             label={"Lista de cartas"}
-            accessibilityLabel={"Clique aqui para ir para a lista de cartas"}
+            accessibilityLabel={"Clique aqui para ir à tela de listagem de cartas"}
             callback={() => {
               props.navigation.navigate("ListScreen");
             }}
@@ -57,7 +57,7 @@ export function HomeScreen(props: ScreenProps) {
           <Button
             aditionalStyles={{ fontSize: 20 }}
             label={"Leitor de cartas"}
-            accessibilityLabel={"Clique aqui para ir para o scanner de cartas"}
+            accessibilityLabel={"Clique aqui para ir à tela de leitura de cartas"}
             callback={() => {
               props.navigation.navigate("CardScannerScreen");
             }}

@@ -3,7 +3,7 @@ import { ScreenProps } from "../../types/ScreenProps";
 import { AccessibilityInfo, Text, View } from "react-native";
 import { getCardByCode } from "../../utils/getCardByCode";
 import { CardInterface } from "../../types/CardInterface";
-import { cardTypeMap } from "../../utils/consts";
+import { cardAttributeMap, cardFrameMap, cardTypeMap } from "../../utils/consts";
 import ViewShot from "react-native-view-shot";
 import QRCode from "react-native-qrcode-svg";
 import { saveQRCodeImage } from "../../utils/saveQrCodeImage";
@@ -65,10 +65,12 @@ export function CardScannerScreen(props: ScreenProps) {
           <View style={styles.cardDataContainer} key={entity.cardCode}>
             <Text style={styles.cardDataText}>Nome: {entity.name}</Text>
             <Text style={styles.cardDataText}>
-              {cardTypeMap[entity.type]
-                ? cardTypeMap[entity.type]
-                : entity.type}
+              {cardFrameMap[entity.frameType]
+                ? cardFrameMap[entity.frameType]
+                : entity.frameType}
             </Text>
+            <Text style={styles.cardDataText}>Atributo: {cardAttributeMap[entity.attribute] ? cardAttributeMap[entity.attribute] : entity.attribute}</Text>
+            <Text style={styles.cardDataText}>Tipo: {cardTypeMap[entity.type] ? cardTypeMap[entity.type] : entity.type}</Text>
             {entity.type.includes("Monster") && (
               <Text style={styles.cardDataText}>
                 {entity.linkRate
@@ -82,7 +84,7 @@ export function CardScannerScreen(props: ScreenProps) {
             {entity.type.includes("Monster") && (
               <Text style={styles.cardDataText}>{"Ataque: " + entity.atk}</Text>
             )}
-            {entity.type.includes("Monster") && entity.frameType !== "link" && (
+            {entity.type.includes("Monster") && !isNaN(entity.def as number) && (
               <Text style={styles.cardDataText}>{"Defesa: " + entity.def}</Text>
             )}
             <ViewShot
@@ -97,7 +99,7 @@ export function CardScannerScreen(props: ScreenProps) {
               />
             </ViewShot>
             <Button
-              label={"Efeito"}
+              label={"Texto da carta"}
               accessibilityLabel={"Clique aqui para ouvir o texto da carta"}
               callback={() => {
                 AccessibilityInfo.announceForAccessibility(entity.description);

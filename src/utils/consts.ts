@@ -1,4 +1,4 @@
-export const cardTypeMap: Record<string, string> = {
+export const cardFrameMap: Record<string, string> = {
     "Effect Monster": "Monstro de efeito",
     "Flip Effect Monster": "Monstro de efeito",
     "Flip Tuner Effect Monster": "Monstro de efeito regulador",
@@ -28,6 +28,53 @@ export const cardTypeMap: Record<string, string> = {
     "XYZ Pendulum Effect Monster": "Monstro de efeito xyz pêndulo",
     "Pendulum Effect Fusion Monster": "Monstro de efeito fusão pêndulo",
     "Token": "Ficha",
+};
+
+export const cardTypeMap: Record<string, string> = {
+    Aqua: "Aqua",
+    Beast: "Besta",
+    "Beast-Warrior": "Besta guerreira",
+    "Creator-God": "Deus criador",
+    Cyberse: "Ciberso",
+    Dinosaur: "Dinossauro",
+    "Divine-Beast": "Besta divina",
+    Dragon: "Dragão",
+    Fairy: "Fada",
+    Fiend: "Demônio",
+    Fish: "Peixe",
+    Insect: "Inseto",
+    Machine: "Maquina",
+    Plant: "Planta",
+    Psychic: "Psíquico",
+    Pyro: "Piro",
+    Reptile: "Réptio",
+    Rock: "Rocha",
+    "Sea Serpent": "Serpente marinha",
+    Spellcaster: "Mago",
+    Thunder: "Trovão",
+    Warrior: "Guerreiro",
+    "Winged Beast": "Besta alada",
+    Wyrm: "Wyrm",
+    Zombie: "Zumbi",
+    Normal: "Normal",
+    Field: "Campo",
+    Equip: "Equipamento",
+    Continuous: "Continua",
+    "Quick-Play": "Efeito rápido",
+    Ritual: "Ritual",
+    Counter: "Resposta",
+};
+
+export const cardAttributeMap: Record<string, string> = {
+    DARK: "Trevas",
+    LIGHT: "Luz",
+    FIRE: "Fogo",
+    WATER: "Água",
+    WIND: "Vento",
+    EARTH: "Terra",
+    DIVINE: "Divino",
+    SPELL: "Magia",
+    TRAP: "Armadilha"
 };
 
 export const typeOptions = [
@@ -64,7 +111,6 @@ export const attributeOptions = [
     { value: "FIRE", label: "Fogo" },
     { value: "WATER", label: "Água" },
     { value: "WIND", label: "Vento" },
-    { value: "EARTH", label: "Terra" },
     { value: "EARTH", label: "Terra" },
     { value: "DIVINE", label: "Divino" },
     { value: "SPELL", label: "Magia" },
