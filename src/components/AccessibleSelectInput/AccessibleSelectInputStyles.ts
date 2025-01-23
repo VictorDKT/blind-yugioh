@@ -2,9 +2,8 @@ import { StyleSheet } from "react-native";
 
 const styles: Record<string, Record<string, unknown>> = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 20,
     justifyContent: "center",
+    marginBottom: 10,
   },
   
   label: {
@@ -23,8 +22,8 @@ const styles: Record<string, Record<string, unknown>> = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 8,
     backgroundColor: '#fff',
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
   },
 });
 

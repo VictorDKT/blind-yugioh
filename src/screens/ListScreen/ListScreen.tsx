@@ -3,7 +3,12 @@ import { ScreenProps } from "../../types/ScreenProps";
 import { Text, View, AccessibilityInfo, TextInput } from "react-native";
 import { CardInterface } from "../../types/CardInterface";
 import { searchCards } from "../../utils/searchCards";
-import { attributeOptions, cardTypeMap, levelOptions, typeOptions } from "../../utils/consts";
+import {
+  attributeOptions,
+  cardTypeMap,
+  levelOptions,
+  typeOptions,
+} from "../../utils/consts";
 import { ScrollView } from "react-native-gesture-handler";
 import QRCode from "react-native-qrcode-svg";
 import ViewShot from "react-native-view-shot";
@@ -163,7 +168,7 @@ export function ListScreen(props: ScreenProps) {
             placeholder={"Insira o nome da carta"}
             acessibilityLabel={"Digite o nome da carta que deseja procurar"}
             defaultValue={filters.name as string}
-            callback={(value)=>{
+            callback={(value) => {
               const newFilters = { ...filters };
               newFilters["name"] = value;
               setFilters(newFilters);
@@ -172,10 +177,12 @@ export function ListScreen(props: ScreenProps) {
           <AccessibleSelectInput
             label={"Nível/Classe/Valor link"}
             placeholder={"Todos"}
-            acessibilityLabel={"Selecione o valor do nivel, classe ou valor link da carta que deseja procurar"}
+            acessibilityLabel={
+              "Selecione o valor do nivel, classe ou valor link da carta que deseja procurar"
+            }
             options={levelOptions}
             defaultValue={filters.level as string}
-            callback={(value)=>{
+            callback={(value) => {
               const newFilters = { ...filters };
               newFilters["level"] = value;
               setFilters(newFilters);
@@ -184,10 +191,12 @@ export function ListScreen(props: ScreenProps) {
           <AccessibleSelectInput
             label={"Atributo"}
             placeholder={"Todos"}
-            acessibilityLabel={"Selecione o atributo da carta que deseja procurar"}
+            acessibilityLabel={
+              "Selecione o atributo da carta que deseja procurar"
+            }
             options={attributeOptions}
             defaultValue={filters.attribute as string}
-            callback={(value)=>{
+            callback={(value) => {
               const newFilters = { ...filters };
               newFilters["attribute"] = value;
               setFilters(newFilters);
@@ -199,7 +208,7 @@ export function ListScreen(props: ScreenProps) {
             acessibilityLabel={"Selecione o tipo da carta que deseja procurar"}
             options={typeOptions}
             defaultValue={filters.type as string}
-            callback={(value)=>{
+            callback={(value) => {
               const newFilters = { ...filters };
               newFilters["type"] = value;
               setFilters(newFilters);
@@ -210,7 +219,8 @@ export function ListScreen(props: ScreenProps) {
             placeholder={"Insira o valor de ataque"}
             acessibilityLabel={"Digite o ataque da carta que deseja procurar"}
             defaultValue={filters.atk as string}
-            callback={(value)=>{
+            type={"number"}
+            callback={(value) => {
               const newFilters = { ...filters };
               newFilters["atk"] = value;
               setFilters(newFilters);
@@ -221,7 +231,8 @@ export function ListScreen(props: ScreenProps) {
             placeholder={"Insira o valor de defesa"}
             acessibilityLabel={"Digite o defesa da carta que deseja procurar"}
             defaultValue={filters.def as string}
-            callback={(value)=>{
+            type={"number"}
+            callback={(value) => {
               const newFilters = { ...filters };
               newFilters["def"] = value;
               setFilters(newFilters);

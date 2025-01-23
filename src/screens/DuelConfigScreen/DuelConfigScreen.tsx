@@ -38,7 +38,6 @@ export function DuelConfigScreen(props: ScreenProps) {
         />
         <AccessibleTextInput
           label={"Nome do jogador 2"}
-          type={"number"}
           placeholder={"Insira o nome do segundo jogador"}
           acessibilityLabel={"Digite o nome do segundo jogador"}
           defaultValue={duelData.player2Name as string}
@@ -53,6 +52,7 @@ export function DuelConfigScreen(props: ScreenProps) {
           placeholder={"Insira a quantidade de pontos de vida inicial"}
           acessibilityLabel={"Digite a quantidade de pontos de vida inicial"}
           defaultValue={duelData.initialLp as string}
+          type={"number"}
           callback={(value) => {
             const newDuelData = { ...duelData };
             newDuelData["initialLp"] = value;
@@ -86,11 +86,16 @@ export function DuelConfigScreen(props: ScreenProps) {
                   " não foram informados. Por favor insira as informações e tente novamente."
               );
             } else {
-              AsyncStorage.setItem("duelData", JSON.stringify(duelData)).then(
-                () => {
-                  props.navigation.navigate("DuelScreen");
-                }
-              );
+              AsyncStorage.setItem(
+                "duelData",
+                JSON.stringify({
+                  ...duelData,
+                  player1Lp: duelData.initialLp,
+                  player2Lp: duelData.initialLp,
+                })
+              ).then(() => {
+                props.navigation.navigate("DuelScreen");
+              });
             }
           }}
         />

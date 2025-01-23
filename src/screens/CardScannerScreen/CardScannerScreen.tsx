@@ -3,11 +3,15 @@ import { ScreenProps } from "../../types/ScreenProps";
 import { AccessibilityInfo, Text, View } from "react-native";
 import { getCardByCode } from "../../utils/getCardByCode";
 import { CardInterface } from "../../types/CardInterface";
-import { cardAttributeMap, cardFrameMap, cardTypeMap } from "../../utils/consts";
+import {
+  cardAttributeMap,
+  cardFrameMap,
+  cardTypeMap,
+} from "../../utils/consts";
 import ViewShot from "react-native-view-shot";
 import QRCode from "react-native-qrcode-svg";
 import { saveQRCodeImage } from "../../utils/saveQrCodeImage";
-import { Camera, CameraView } from 'expo-camera';
+import { Camera, CameraView } from "expo-camera";
 import { Button } from "../../components/Button/Button";
 import styles from "./CardScannerScreenStyles";
 
@@ -20,8 +24,8 @@ export function CardScannerScreen(props: ScreenProps) {
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
-      const { status } = await await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
     };
 
     getBarCodeScannerPermissions();
@@ -36,10 +40,12 @@ export function CardScannerScreen(props: ScreenProps) {
         </Text>
         <Button
           label={"Conceder permissão"}
-          accessibilityLabel={"Clique aqui para permitir que o aplicativo acesse sua câmera"}
+          accessibilityLabel={
+            "Clique aqui para permitir que o aplicativo acesse sua câmera"
+          }
           callback={async () => {
             const { status } = await Camera.requestCameraPermissionsAsync();
-            setHasPermission(status === 'granted');
+            setHasPermission(status === "granted");
           }}
         />
       </View>
@@ -53,24 +59,34 @@ export function CardScannerScreen(props: ScreenProps) {
           label={"Voltar"}
           accessibilityLabel={"Clique aqui para voltar ao menu principal"}
           callback={() => {
-            if(scanned) {
-              setScanned(false); 
+            if (scanned) {
+              setScanned(false);
               setEntity(null);
-            } else{
+            } else {
               props.navigation.goBack();
             }
           }}
         />
         {scanned && entity ? (
-          <View style={styles.cardDataContainer} key={entity.cardCode}>
+          <View style={styles.cardDataContainer}>
             <Text style={styles.cardDataText}>Nome: {entity.name}</Text>
             <Text style={styles.cardDataText}>
               {cardFrameMap[entity.frameType]
                 ? cardFrameMap[entity.frameType]
                 : entity.frameType}
             </Text>
-            <Text style={styles.cardDataText}>Atributo: {cardAttributeMap[entity.attribute] ? cardAttributeMap[entity.attribute] : entity.attribute}</Text>
-            <Text style={styles.cardDataText}>Tipo: {cardTypeMap[entity.type] ? cardTypeMap[entity.type] : entity.type}</Text>
+            <Text style={styles.cardDataText}>
+              Atributo:{" "}
+              {cardAttributeMap[entity.attribute]
+                ? cardAttributeMap[entity.attribute]
+                : entity.attribute}
+            </Text>
+            <Text style={styles.cardDataText}>
+              Tipo:{" "}
+              {cardTypeMap[entity.type]
+                ? cardTypeMap[entity.type]
+                : entity.type}
+            </Text>
             {entity.type.includes("Monster") && (
               <Text style={styles.cardDataText}>
                 {entity.linkRate
@@ -84,9 +100,12 @@ export function CardScannerScreen(props: ScreenProps) {
             {entity.type.includes("Monster") && (
               <Text style={styles.cardDataText}>{"Ataque: " + entity.atk}</Text>
             )}
-            {entity.type.includes("Monster") && !isNaN(entity.def as number) && (
-              <Text style={styles.cardDataText}>{"Defesa: " + entity.def}</Text>
-            )}
+            {entity.type.includes("Monster") &&
+              !isNaN(entity.def as number) && (
+                <Text style={styles.cardDataText}>
+                  {"Defesa: " + entity.def}
+                </Text>
+              )}
             <ViewShot
               ref={(ref) => (qrRef.current = ref)}
               style={styles.qrCodeContainer}
@@ -108,25 +127,35 @@ export function CardScannerScreen(props: ScreenProps) {
             <Button
               label={"Gerar QR Code"}
               accessibilityLabel={"Clique aqui para gerar o QR Code da carta"}
-              aditionalStyles={{marginBottom: 0}}
+              aditionalStyles={{ marginBottom: 0 }}
               callback={() => {
                 saveQRCodeImage(qrRef.current, entity.name);
               }}
             />
           </View>
         ) : (
-          <View style={{height: 300, width: "100%"}}>
+          <View style={{ height: 400, width: "100%" }}>
+            <Text style={styles.cardDataText}>
+              Aponte a câmera para o QR Code da carta
+            </Text>
             <CameraView
-              style={{width: '100%', flex: 1}}
+              style={{ width: "100%", flex: 1 }}
               barcodeScannerSettings={{
                 barcodeTypes: ["qr", "pdf417"],
               }}
-              onBarcodeScanned={scanned ? undefined : ({ type, data })=>{
-                getCardByCode(data as string).then((card) => {
-                  setEntity(card);
-                  setScanned(true);
-                });
-              }}
+              onBarcodeScanned={
+                scanned
+                  ? undefined
+                  : ({ type, data }) => {
+                      getCardByCode(data as string).then((card) => {
+                        AccessibilityInfo.announceForAccessibility(
+                          "Carta identificada com sucesso"
+                        );
+                        setEntity(card);
+                        setScanned(true);
+                      });
+                    }
+              }
             />
           </View>
         )}

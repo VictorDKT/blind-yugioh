@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const styles: Record<string, Record<string, unknown>> = StyleSheet.create({
     cardButton: {
-        marginBottom: 10,
+        marginBottom: 15,
         padding: 10,
         borderRadius: 10,
         backgroundColor: "red",
@@ -12,7 +12,7 @@ const styles: Record<string, Record<string, unknown>> = StyleSheet.create({
     
     cardButtonText: {
         fontFamily: "Roboto-Bold",
-        fontSize: 15,
+        fontSize: 25,
         color: "white",
     },
 })
