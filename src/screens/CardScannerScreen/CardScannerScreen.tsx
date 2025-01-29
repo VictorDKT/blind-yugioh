@@ -75,17 +75,19 @@ export function CardScannerScreen(props: ScreenProps) {
                 ? cardFrameMap[entity.frameType]
                 : entity.frameType}
             </Text>
-            <Text style={styles.cardDataText}>
-              Atributo:{" "}
-              {cardAttributeMap[entity.attribute]
-                ? cardAttributeMap[entity.attribute]
-                : entity.attribute}
-            </Text>
+            {entity.type.includes("Monster") && (
+              <Text style={styles.cardDataText}>
+                Atributo:{" "}
+                {cardAttributeMap[entity.attribute]
+                  ? cardAttributeMap[entity.attribute]
+                  : entity.attribute}
+              </Text>
+            )}
             <Text style={styles.cardDataText}>
               Tipo:{" "}
-              {cardTypeMap[entity.type]
-                ? cardTypeMap[entity.type]
-                : entity.type}
+              {cardTypeMap[entity.race]
+                ? cardTypeMap[entity.race]
+                : entity.race}
             </Text>
             {entity.type.includes("Monster") && (
               <Text style={styles.cardDataText}>

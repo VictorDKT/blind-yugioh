@@ -130,25 +130,27 @@ export function CardTab(props: CardTab) {
               }}
             />
           )}
-          <Button
-            label={"Atributo"}
-            accessibilityLabel={"Clique aqui para ouvir o atributo da carta"}
-            callback={() => {
-              AccessibilityInfo.announceForAccessibility(
-                cardAttributeMap[entity.attribute]
-                  ? cardAttributeMap[entity.attribute]
-                  : entity.attribute
-              );
-            }}
-          />
+          {entity.type.includes("Monster") && !isNaN(entity.def as number) && (
+            <Button
+              label={"Atributo"}
+              accessibilityLabel={"Clique aqui para ouvir o atributo da carta"}
+              callback={() => {
+                AccessibilityInfo.announceForAccessibility(
+                  cardAttributeMap[entity.attribute]
+                    ? cardAttributeMap[entity.attribute]
+                    : entity.attribute
+                );
+              }}
+            />
+          )}
           <Button
             label={"Tipo"}
             accessibilityLabel={"Clique aqui para ouvir o tipo da carta"}
             callback={() => {
               AccessibilityInfo.announceForAccessibility(
-                cardTypeMap[entity.type]
-                  ? cardTypeMap[entity.type]
-                  : entity.type
+                cardTypeMap[entity.race]
+                  ? cardTypeMap[entity.race]
+                  : entity.race
               );
             }}
           />
