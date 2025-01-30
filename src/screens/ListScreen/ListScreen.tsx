@@ -17,25 +17,30 @@ import { Button } from "../../components/Button/Button";
 import styles from "./ListScreenStyles";
 import { AccessibleTextInput } from "../../components/AccessibleTextInput/AccessibleTextInput";
 import { AccessibleSelectInput } from "../../components/AccessibleSelectInput/AccessibleSelectInput";
+import { AccessibleSpinner } from "../../components/LoadSpinner/LoadSpinner";
 
 export function ListScreen(props: ScreenProps) {
   const [entities, setEntities] = useState<CardInterface[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState<Record<string, string | number>>({});
   const [tab, setTab] = useState("list");
   const qrRefs = useRef<Record<string, any>>({});
 
   useEffect(() => {
+    setLoading(true);
     searchCards({ pageNumber, filters }).then((response) => {
       setEntities(response.data);
       setTotalPages(response.numberOfPages);
+      setLoading(false);
     });
   }, [pageNumber]);
 
   return (
-    <ScrollView style={styles.page}>
+    <View style={{width: "100%", height: "100%", position: "absolute"}}>
+      {loading && <AccessibleSpinner accessibilityLabel={"As cartas estão sendo carregadas. Por favor, aguarde."} />}
+      <ScrollView style={styles.page}>
       {tab === "list" ? (
         <View style={styles.pageContainer}>
           <Button
@@ -95,6 +100,8 @@ export function ListScreen(props: ScreenProps) {
                 </ViewShot>
                 <Button
                   label={"Efeito"}
+                  customClassName={"smallButton"}
+                  customTextClassName={"smallButtonText"}
                   accessibilityLabel={"Clique aqui para ouvir o texto da carta"}
                   callback={() => {
                     AccessibilityInfo.announceForAccessibility(
@@ -104,9 +111,9 @@ export function ListScreen(props: ScreenProps) {
                 />
                 <Button
                   label={"Gerar QR Code"}
-                  accessibilityLabel={
-                    "Clique aqui para gerar o QR Code da carta"
-                  }
+                  customClassName={"smallButton"}
+                  customTextClassName={"smallButtonText"}
+                  accessibilityLabel={"Clique aqui para gerar o QR Code da carta"}
                   aditionalStyles={{ marginBottom: 0 }}
                   callback={() => {
                     saveQRCodeImage(
@@ -121,7 +128,9 @@ export function ListScreen(props: ScreenProps) {
           <View style={styles.footer}>
             {pageNumber !== 1 ? (
               <Button
-                aditionalStyles={{ flex: 1 }}
+              aditionalStyles={{ flex: 1 }}
+                customClassName={"footerButton"}
+                customTextClassName={"footerButtonText"}
                 label={"Anterior"}
                 accessibilityLabel={
                   "Clique aqui para ir para a página anterior da listagem"
@@ -141,6 +150,8 @@ export function ListScreen(props: ScreenProps) {
             {pageNumber !== totalPages ? (
               <Button
                 aditionalStyles={{ flex: 1 }}
+                customClassName={"footerButton"}
+                customTextClassName={"footerButtonText"}
                 label={"Próxima"}
                 accessibilityLabel={
                   "Clique aqui para ir para a próxima página da listagem"
@@ -252,5 +263,7 @@ export function ListScreen(props: ScreenProps) {
         </View>
       )}
     </ScrollView>
+    </View>
+    
   );
 }

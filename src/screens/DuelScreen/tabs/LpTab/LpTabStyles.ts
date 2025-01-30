@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
 
     cardDataText: {
         fontFamily: "Roboto-Bold",
-        fontSize: 15,
+        fontSize: 18,
         marginBottom: 5,
         color: "black",
     },

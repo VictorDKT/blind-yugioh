@@ -47,11 +47,11 @@ export function HomeScreen(props: ScreenProps) {
       <Text style={styles.pageTitle}>Blind Yugioh</Text>
       {hasPermission 
         ?
-          <View style={{ width: "100%"}}>
+          <View style={{ width: "100%", alignItems: "center" }}>
             {loading ? (
               <Text style={styles.loader}>Carregando...</Text>
             ) : (
-              <View style={{ width: "100%" }}>
+              <View style={{ width: "100%", alignItems: "center" }}>
                 <Button
                   aditionalStyles={{ fontSize: 20 }}
                   label={"Duelo"}
@@ -84,7 +84,7 @@ export function HomeScreen(props: ScreenProps) {
             )}
           </View>
         :
-          <View style={{ width: "100%"}}>
+          <View style={{ width: "100%", alignItems: "center" }}>
             <Text style={styles.loader}>A permissão de acesso aos seus arquivos é necessária para o aplicativo funcionar</Text>
             <Button 
               label={"Conceder permissão"}

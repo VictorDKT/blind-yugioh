@@ -10,6 +10,7 @@ import {
 import { Camera, CameraView } from "expo-camera";
 import { Button } from "../../../../components/Button/Button";
 import styles from "./CarTabStyles";
+import { AccessibleSpinner } from "../../../../components/LoadSpinner/LoadSpinner";
 
 interface CardTab {
   setTab: (value: string) => void;
@@ -18,9 +19,22 @@ interface CardTab {
 }
 
 export function CardTab(props: CardTab) {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [hasPermission, setHasPermission] = useState<boolean>();
   const [entity, setEntity] = useState<CardInterface | null>();
+  const [code, setCode] = useState<string | null>();
+  
+  useEffect(()=>{
+    AccessibilityInfo.announceForAccessibility("Carta escaneada com sucesso. Aguarde enquanto as informações da carta são carregadas.");
+    getCardByCode(code as string).then((card) => {
+      setEntity(card);
+      props.setScanned(true);
+      props.setTab("cardData");
+      setCode(null);
+      setLoading(false);
+      AccessibilityInfo.announceForAccessibility("Os dados da carta foram carregados.");
+    });
+  }, [code])
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -30,6 +44,14 @@ export function CardTab(props: CardTab) {
 
     getBarCodeScannerPermissions();
   }, []);
+
+  if(loading) {
+    return (
+      <View style={{width: "100%", height: "100%", position: "absolute"}}>
+        {loading && <AccessibleSpinner accessibilityLabel={"Aguarde enquanto as informações da carta são carregadas."} />}
+      </View>
+    )
+  }
 
   if (hasPermission === null || hasPermission === false) {
     return (
@@ -158,7 +180,7 @@ export function CardTab(props: CardTab) {
       ) : (
         <View style={{ height: 400, width: "100%" }}>
           <Text style={styles.cardDataText}>
-            Aponte a câmera para o QR Code da carta
+            Aponte a câmera para a parte frontal da carta e aguarde alguns segundos
           </Text>
           <CameraView
             style={{ width: "100%", flex: 1 }}
@@ -169,14 +191,8 @@ export function CardTab(props: CardTab) {
               props.scanned
                 ? undefined
                 : ({ type, data }) => {
-                    getCardByCode(data as string).then((card) => {
-                      AccessibilityInfo.announceForAccessibility(
-                        "Carta identificada com sucesso"
-                      );
-                      setEntity(card);
-                      props.setScanned(true);
-                      props.setTab("cardData");
-                    });
+                    setLoading(true);
+                    setCode(data);
                   }
             }
           />

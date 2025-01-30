@@ -23,7 +23,7 @@ export default function App() {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1, width: "100%", height: "100%" }}>
       <SafeAreaView style={styles.safeArea}>
         <AppStack />
         <StatusBar style="light" />

@@ -7,9 +7,9 @@ const styles: Record<string, Record<string, unknown>> = StyleSheet.create({
   },
   
   label: {
-    fontSize: 16,
-    color: "#333",
+    fontSize: 18,
     marginBottom: 8,
+    fontFamily: "Roboto-Bold",
   },
 
   input: {
@@ -19,7 +19,6 @@ const styles: Record<string, Record<string, unknown>> = StyleSheet.create({
     borderRadius: 8,
     paddingVertical: 15,
     paddingHorizontal: 15,
-    color: "#333",
     backgroundColor: "#fff",
   },
 });

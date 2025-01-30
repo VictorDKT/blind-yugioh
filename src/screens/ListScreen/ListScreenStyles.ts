@@ -4,6 +4,7 @@ const styles = StyleSheet.create({
   page: {
     width: "100%",
     height: "100%",
+    position: "relative",
   },
 
   pageContainer: {
@@ -29,6 +30,9 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: "row",
     width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1
   },
 
   footerPageNumber: {

@@ -7,14 +7,13 @@ const styles: Record<string, Record<string, unknown>> = StyleSheet.create({
   },
   
   label: {
-    fontSize: 16,
-    color: "#333",
+    fontSize: 18,
     marginBottom: 8,
+    fontFamily: "Roboto-Bold",
   },
 
   input: {
-    fontSize: 16,
-    color: '#333',
+    fontSize: 18,
   },
 
   selectContainer: {

@@ -14,13 +14,26 @@ import { saveQRCodeImage } from "../../utils/saveQrCodeImage";
 import { Camera, CameraView } from "expo-camera";
 import { Button } from "../../components/Button/Button";
 import styles from "./CardScannerScreenStyles";
+import { AccessibleSpinner } from "../../components/LoadSpinner/LoadSpinner";
 
 export function CardScannerScreen(props: ScreenProps) {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [hasPermission, setHasPermission] = useState<boolean>();
   const [scanned, setScanned] = useState(false);
   const [entity, setEntity] = useState<CardInterface | null>();
   const qrRef = useRef<ViewShot | null>();
+  const [code, setCode] = useState<string | null>();
+
+  useEffect(()=>{
+    AccessibilityInfo.announceForAccessibility("Carta escaneada com sucesso. Aguarde enquanto as informações da carta são carregadas.");
+    getCardByCode(code as string).then((card) => {
+      setEntity(card);
+      setScanned(true);
+      setCode(null);
+      setLoading(false);
+      AccessibilityInfo.announceForAccessibility("Os dados da carta foram carregados.");
+    });
+  }, [code])
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -30,6 +43,14 @@ export function CardScannerScreen(props: ScreenProps) {
 
     getBarCodeScannerPermissions();
   }, []);
+
+  if(loading) {
+    return (
+      <View style={{width: "100%", height: "100%", position: "absolute"}}>
+        {loading && <AccessibleSpinner accessibilityLabel={"Aguarde enquanto as informações da carta são carregadas."} />}
+      </View>
+    )
+  }
 
   if (hasPermission === null || hasPermission === false) {
     return (
@@ -121,6 +142,8 @@ export function CardScannerScreen(props: ScreenProps) {
             </ViewShot>
             <Button
               label={"Texto da carta"}
+              customClassName={"smallButton"}
+              customTextClassName={"smallButtonText"}
               accessibilityLabel={"Clique aqui para ouvir o texto da carta"}
               callback={() => {
                 AccessibilityInfo.announceForAccessibility(entity.description);
@@ -128,6 +151,8 @@ export function CardScannerScreen(props: ScreenProps) {
             />
             <Button
               label={"Gerar QR Code"}
+              customClassName={"smallButton"}
+              customTextClassName={"smallButtonText"}
               accessibilityLabel={"Clique aqui para gerar o QR Code da carta"}
               aditionalStyles={{ marginBottom: 0 }}
               callback={() => {
@@ -138,7 +163,7 @@ export function CardScannerScreen(props: ScreenProps) {
         ) : (
           <View style={{ height: 400, width: "100%" }}>
             <Text style={styles.cardDataText}>
-              Aponte a câmera para o QR Code da carta
+              Aponte a câmera para a parte frontal da carta e aguarde alguns segundos
             </Text>
             <CameraView
               style={{ width: "100%", flex: 1 }}
@@ -149,13 +174,8 @@ export function CardScannerScreen(props: ScreenProps) {
                 scanned
                   ? undefined
                   : ({ type, data }) => {
-                      getCardByCode(data as string).then((card) => {
-                        AccessibilityInfo.announceForAccessibility(
-                          "Carta identificada com sucesso"
-                        );
-                        setEntity(card);
-                        setScanned(true);
-                      });
+                      setLoading(true);
+                      setCode(data);
                     }
               }
             />

@@ -8,8 +8,8 @@ const styles = StyleSheet.create({
 
     pageContainer: {
         width: "100%",
-        padding: 20,
         height: "100%",
+        padding: 20,
     },
 
     startButton: {

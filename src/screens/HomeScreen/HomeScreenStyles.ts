@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     loader: {
         fontFamily: "Roboto-Bold",
         fontSize: 30,
+        marginBottom: 10,
     },
 
     startButton: {
