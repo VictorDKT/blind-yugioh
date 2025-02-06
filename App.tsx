@@ -1,4 +1,3 @@
-import "./gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import AppStack from "./src/routes/AppStack";
 import { Text, StyleSheet } from "react-native";
@@ -6,6 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import React from "react";
+import "./gesture-handler";
 
 export default function App() {
   const [fontsLoaded, error] = useFonts({

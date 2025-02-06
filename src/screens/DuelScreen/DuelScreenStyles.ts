@@ -4,6 +4,7 @@ const styles = StyleSheet.create({
     page: {
         width: "100%",
         height: "100%",
+        position: "relative",
     },
 
     pageContainer: {

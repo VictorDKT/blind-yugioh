@@ -10,7 +10,7 @@ import styles from "./HomeScreenStyles";
 import { requestStoragePermission } from "../../utils/requestStoragePermission";
 
 export function HomeScreen(props: ScreenProps) {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [hasPermission, setHasPermission] = useState(false);
   const fileUri = `${FileSystem.documentDirectory}data.json`;
 
@@ -21,15 +21,12 @@ export function HomeScreen(props: ScreenProps) {
 
         if (!fileExists.exists) {
           setLoading(true);
-          downloadData().then((response) => {
-            setCardData(response as CardInterface[]);
+          downloadData().then(() => {
             setLoading(false);
           });
         } else {
           setLoading(false);
-          downloadData().then((response) => {
-            setCardData(response as CardInterface[]);
-          });
+          downloadData();
         }
       })();
     }

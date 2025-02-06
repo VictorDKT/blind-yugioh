@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AccessibilityInfo, Text, View } from "react-native";
+import { AccessibilityInfo, Dimensions, Text, View } from "react-native";
 import { getCardByCode } from "../../../../utils/getCardByCode";
 import { CardInterface } from "../../../../types/CardInterface";
 import {
@@ -23,17 +23,21 @@ export function CardTab(props: CardTab) {
   const [hasPermission, setHasPermission] = useState<boolean>();
   const [entity, setEntity] = useState<CardInterface | null>();
   const [code, setCode] = useState<string | null>();
+  const screenWidth = Dimensions.get("window").width;
+  const screenHeight = Dimensions.get("window").height;
   
   useEffect(()=>{
-    AccessibilityInfo.announceForAccessibility("Carta escaneada com sucesso. Aguarde enquanto as informações da carta são carregadas.");
-    getCardByCode(code as string).then((card) => {
-      setEntity(card);
-      props.setScanned(true);
-      props.setTab("cardData");
-      setCode(null);
-      setLoading(false);
-      AccessibilityInfo.announceForAccessibility("Os dados da carta foram carregados.");
-    });
+    if(code) {
+      AccessibilityInfo.announceForAccessibility("Carta escaneada com sucesso. Aguarde enquanto as informações da carta são carregadas.");
+      getCardByCode(code as string).then((card) => {
+        setEntity(card);
+        props.setScanned(true);
+        props.setTab("cardData");
+        setCode(null);
+        setLoading(false);
+        AccessibilityInfo.announceForAccessibility("Os dados da carta foram carregados.");
+      });
+    }
   }, [code])
 
   useEffect(() => {
@@ -47,7 +51,7 @@ export function CardTab(props: CardTab) {
 
   if(loading) {
     return (
-      <View style={{width: "100%", height: "100%", position: "absolute"}}>
+      <View style={{width: screenWidth, height: screenHeight, position: "absolute"}}>
         {loading && <AccessibleSpinner accessibilityLabel={"Aguarde enquanto as informações da carta são carregadas."} />}
       </View>
     )

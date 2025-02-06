@@ -21,7 +21,7 @@ export async function searchCards(props: ISearchCardsProps) {
       ) {
         cardsData.forEach((card) => {
           if (key === "name") {
-            if (card.name.includes(props.filters[key] as string)) {
+            if (card.name.toLocaleLowerCase().includes((props.filters[key] as string).toLocaleLowerCase())) {
               filteredData.push(card);
             }
           } else if (key === "level") {
@@ -48,7 +48,7 @@ export async function searchCards(props: ISearchCardsProps) {
       (pageNumber - 1) * entitiesPerPage,
       (pageNumber - 1) * entitiesPerPage + entitiesPerPage
     ),
-    numberOfPages: Math.floor(filteredData.length / entitiesPerPage),
+    numberOfPages: Math.ceil(filteredData.length / entitiesPerPage),
   };
 }
 

@@ -25,14 +25,16 @@ export function CardScannerScreen(props: ScreenProps) {
   const [code, setCode] = useState<string | null>();
 
   useEffect(()=>{
-    AccessibilityInfo.announceForAccessibility("Carta escaneada com sucesso. Aguarde enquanto as informações da carta são carregadas.");
-    getCardByCode(code as string).then((card) => {
-      setEntity(card);
-      setScanned(true);
-      setCode(null);
-      setLoading(false);
-      AccessibilityInfo.announceForAccessibility("Os dados da carta foram carregados.");
-    });
+    if(code) {
+      AccessibilityInfo.announceForAccessibility("Carta escaneada com sucesso. Aguarde enquanto as informações da carta são carregadas.");
+      getCardByCode(code as string).then((card) => {
+        setEntity(card);
+        setScanned(true);
+        setCode(null);
+        setLoading(false);
+        AccessibilityInfo.announceForAccessibility("Os dados da carta foram carregados.");
+      });
+    }
   }, [code])
 
   useEffect(() => {
