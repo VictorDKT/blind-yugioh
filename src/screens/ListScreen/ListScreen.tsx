@@ -195,6 +195,9 @@ export function ListScreen(props: ScreenProps) {
               setTab("list");
             }}
           />
+          <Text style={styles.cardDataText}>
+            Insira os filtros de busca
+          </Text>
           <AccessibleTextInput
             label={"Nome"}
             placeholder={"Insira o nome da carta"}
