@@ -64,7 +64,7 @@ export function CardScannerScreen(props: ScreenProps) {
         <Button
           label={"Conceder permissão"}
           accessibilityLabel={
-            "Clique aqui para permitir que o aplicativo acesse sua câmera"
+            "Permitir que o aplicativo acesse sua câmera"
           }
           callback={async () => {
             const { status } = await Camera.requestCameraPermissionsAsync();
@@ -80,7 +80,7 @@ export function CardScannerScreen(props: ScreenProps) {
       <View style={styles.pageContainer}>
         <Button
           label={"Voltar"}
-          accessibilityLabel={"Clique aqui para voltar ao menu principal"}
+          accessibilityLabel={"Voltar ao menu principal"}
           callback={() => {
             if (scanned) {
               setScanned(false);
@@ -146,7 +146,7 @@ export function CardScannerScreen(props: ScreenProps) {
               label={"Texto da carta"}
               customClassName={"smallButton"}
               customTextClassName={"smallButtonText"}
-              accessibilityLabel={"Clique aqui para ouvir o texto da carta"}
+              accessibilityLabel={"Ouvir o texto da carta"}
               callback={() => {
                 AccessibilityInfo.announceForAccessibility(entity.description);
               }}
@@ -155,7 +155,7 @@ export function CardScannerScreen(props: ScreenProps) {
               label={"Gerar QR Code"}
               customClassName={"smallButton"}
               customTextClassName={"smallButtonText"}
-              accessibilityLabel={"Clique aqui para gerar o QR Code da carta"}
+              accessibilityLabel={"Gerar o QR Code da carta"}
               aditionalStyles={{ marginBottom: 0 }}
               callback={() => {
                 saveQRCodeImage(qrRef.current, entity.name);
@@ -168,6 +168,7 @@ export function CardScannerScreen(props: ScreenProps) {
               Aponte a câmera para a parte frontal da carta e aguarde alguns segundos
             </Text>
             <CameraView
+              accessibilityLabel={"Leitor de QR Code. Aponte a câmera para o código."}
               style={{ width: "100%", flex: 1 }}
               barcodeScannerSettings={{
                 barcodeTypes: ["qr", "pdf417"],

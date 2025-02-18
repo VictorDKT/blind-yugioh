@@ -5,6 +5,8 @@ import { CardInterface } from "../../types/CardInterface";
 import { searchCards } from "../../utils/searchCards";
 import {
   attributeOptions,
+  cardAttributeMap,
+  cardFrameMap,
   cardTypeMap,
   levelOptions,
   typeOptions,
@@ -27,6 +29,7 @@ export function ListScreen(props: ScreenProps) {
   const [filters, setFilters] = useState<Record<string, string | number>>({});
   const [tab, setTab] = useState("list");
   const qrRefs = useRef<Record<string, any>>({});
+  const scrollViewRef = useRef<ScrollView>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -35,24 +38,24 @@ export function ListScreen(props: ScreenProps) {
       setTotalPages(response.numberOfPages);
       setLoading(false);
     });
-  }, [pageNumber]);
+  }, []);
 
   return (
     <View style={{width: "100%", height: "100%", position: "absolute"}}>
       {loading && <AccessibleSpinner accessibilityLabel={"As cartas estão sendo carregadas. Por favor, aguarde."} />}
-      <ScrollView style={styles.page}>
+      <ScrollView ref={scrollViewRef} style={styles.page}>
       {tab === "list" ? (
         <View style={styles.pageContainer}>
           <Button
             label={"Voltar"}
-            accessibilityLabel="Clique aqui para voltar ao menu principal"
+            accessibilityLabel="Voltar ao menu principal"
             callback={() => {
               props.navigation.goBack();
             }}
           />
           <Button
             label={"Filtrar"}
-            accessibilityLabel="Clique aqui para adicionar filtros de busca"
+            accessibilityLabel="Adicionar filtros de busca"
             callback={() => {
               setTab("filter");
             }}
@@ -62,9 +65,9 @@ export function ListScreen(props: ScreenProps) {
               <View style={styles.cardDataContainer} key={entity.cardCode}>
                 <Text style={styles.cardDataText}>Nome: {entity.name}</Text>
                 <Text style={styles.cardDataText}>
-                  {cardTypeMap[entity.type]
-                    ? cardTypeMap[entity.type]
-                    : entity.type}
+                  {cardFrameMap[entity.type]
+                    ? cardFrameMap[entity.type]
+                    : entity.race}
                 </Text>
                 {entity.type.includes("Monster") && (
                   <Text style={styles.cardDataText}>
@@ -76,6 +79,14 @@ export function ListScreen(props: ScreenProps) {
                     : {entity.linkRate ? entity.linkRate : entity.level}
                   </Text>
                 )}
+                {entity.type.includes("Monster") && (
+                  <Text style={styles.cardDataText}>
+                    {`Atributo: ${cardAttributeMap[entity.attribute] ? cardAttributeMap[entity.attribute] : entity.attribute}`}
+                  </Text>
+                )}
+                <Text style={styles.cardDataText}>
+                  {`Tipo: ${cardTypeMap[entity.race] ? cardTypeMap[entity.race] : entity.race}`}
+                </Text>
                 {entity.type.includes("Monster") && (
                   <Text style={styles.cardDataText}>
                     {"Ataque: " + entity.atk}
@@ -99,10 +110,10 @@ export function ListScreen(props: ScreenProps) {
                   />
                 </ViewShot>
                 <Button
-                  label={"Efeito"}
+                  label={"Texto da carta"}
                   customClassName={"smallButton"}
                   customTextClassName={"smallButtonText"}
-                  accessibilityLabel={"Clique aqui para ouvir o texto da carta"}
+                  accessibilityLabel={"Ouvir o texto da carta"}
                   callback={() => {
                     AccessibilityInfo.announceForAccessibility(
                       entity.description
@@ -113,7 +124,7 @@ export function ListScreen(props: ScreenProps) {
                   label={"Gerar QR Code"}
                   customClassName={"smallButton"}
                   customTextClassName={"smallButtonText"}
-                  accessibilityLabel={"Clique aqui para gerar o QR Code da carta"}
+                  accessibilityLabel={"Gerar o QR Code da carta"}
                   aditionalStyles={{ marginBottom: 0 }}
                   callback={() => {
                     saveQRCodeImage(
@@ -133,10 +144,15 @@ export function ListScreen(props: ScreenProps) {
                 customTextClassName={"footerButtonText"}
                 label={"Anterior"}
                 accessibilityLabel={
-                  "Clique aqui para ir para a página anterior da listagem"
+                  "Ir para a página anterior da listagem"
                 }
                 callback={() => {
-                  setPageNumber(pageNumber - 1);
+                  searchCards({ pageNumber: pageNumber - 1, filters }).then((response) => {
+                    setEntities(response.data);
+                    setPageNumber(pageNumber - 1);
+                    scrollViewRef.current?.scrollTo({ y: 0, animated: true });
+                    setLoading(false);
+                  });
                 }}
               />
             ) : (
@@ -154,10 +170,15 @@ export function ListScreen(props: ScreenProps) {
                 customTextClassName={"footerButtonText"}
                 label={"Próxima"}
                 accessibilityLabel={
-                  "Clique aqui para ir para a próxima página da listagem"
+                  "Ir para a próxima página da listagem"
                 }
                 callback={() => {
-                  setPageNumber(pageNumber + 1);
+                  searchCards({ pageNumber: pageNumber + 1, filters }).then((response) => {
+                    setEntities(response.data);
+                    setPageNumber(pageNumber + 1);
+                    scrollViewRef.current?.scrollTo({ y: 0, animated: true });
+                    setLoading(false);
+                  });
                 }}
               />
             ) : (
@@ -169,7 +190,7 @@ export function ListScreen(props: ScreenProps) {
         <View style={styles.pageContainer}>
           <Button
             label={"Voltar"}
-            accessibilityLabel="Clique aqui para voltar à listagem de cartas"
+            accessibilityLabel="Voltar à listagem de cartas"
             callback={() => {
               setTab("list");
             }}
@@ -178,7 +199,7 @@ export function ListScreen(props: ScreenProps) {
             label={"Nome"}
             placeholder={"Insira o nome da carta"}
             acessibilityLabel={"Digite o nome da carta que deseja procurar"}
-            defaultValue={filters.name as string}
+            defaultValue={filters.name ? filters.name as string : ""}
             callback={(value) => {
               const newFilters = { ...filters };
               newFilters["name"] = value;
@@ -187,12 +208,12 @@ export function ListScreen(props: ScreenProps) {
           />
           <AccessibleSelectInput
             label={"Nível/Classe/Valor link"}
-            placeholder={"Todos"}
-            acessibilityLabel={
+            placeholder={"Todos os níveis"}
+            accessibilityLabel={
               "Selecione o valor do nivel, classe ou valor link da carta que deseja procurar"
             }
             options={levelOptions}
-            defaultValue={filters.level as string}
+            defaultValue={filters.level ? filters.level as string : ""}
             callback={(value) => {
               const newFilters = { ...filters };
               newFilters["level"] = value;
@@ -201,12 +222,12 @@ export function ListScreen(props: ScreenProps) {
           />
           <AccessibleSelectInput
             label={"Atributo"}
-            placeholder={"Todos"}
-            acessibilityLabel={
+            placeholder={"Todos os atributos"}
+            accessibilityLabel={
               "Selecione o atributo da carta que deseja procurar"
             }
             options={attributeOptions}
-            defaultValue={filters.attribute as string}
+            defaultValue={filters.attribute ? filters.attribute as string : ""}
             callback={(value) => {
               const newFilters = { ...filters };
               newFilters["attribute"] = value;
@@ -215,10 +236,10 @@ export function ListScreen(props: ScreenProps) {
           />
           <AccessibleSelectInput
             label={"Tipo"}
-            placeholder={"Todos"}
-            acessibilityLabel={"Selecione o tipo da carta que deseja procurar"}
+            placeholder={"Todos os tipos"}
+            accessibilityLabel={"Selecione o tipo da carta que deseja procurar"}
             options={typeOptions}
-            defaultValue={filters.type as string}
+            defaultValue={filters.type ? filters.type as string : ""}
             callback={(value) => {
               const newFilters = { ...filters };
               newFilters["type"] = value;
@@ -229,7 +250,7 @@ export function ListScreen(props: ScreenProps) {
             label={"Ataque"}
             placeholder={"Insira o valor de ataque"}
             acessibilityLabel={"Digite o ataque da carta que deseja procurar"}
-            defaultValue={filters.atk as string}
+            defaultValue={filters.atk ? filters.atk as string : ""}
             type={"number"}
             callback={(value) => {
               const newFilters = { ...filters };
@@ -241,7 +262,7 @@ export function ListScreen(props: ScreenProps) {
             label={"Defesa"}
             placeholder={"Insira o valor de defesa"}
             acessibilityLabel={"Digite o defesa da carta que deseja procurar"}
-            defaultValue={filters.def as string}
+            defaultValue={filters.def ? filters.def as string : ""}
             type={"number"}
             callback={(value) => {
               const newFilters = { ...filters };
@@ -251,11 +272,15 @@ export function ListScreen(props: ScreenProps) {
           />
           <Button
             label={"Filtrar"}
-            accessibilityLabel="Clique aqui para salvar os filtros e realizar buscar"
+            accessibilityLabel="Filtrar buscar"
             callback={() => {
-              searchCards({ pageNumber, filters }).then((response) => {
+              setLoading(true);
+              searchCards({ pageNumber: 1, filters }).then((response) => {
                 setEntities(response.data);
                 setTotalPages(response.numberOfPages);
+                setPageNumber(1);
+                scrollViewRef.current?.scrollTo({ y: 0, animated: true });
+                setLoading(false);
               });
               setTab("list");
             }}
@@ -263,7 +288,6 @@ export function ListScreen(props: ScreenProps) {
         </View>
       )}
     </ScrollView>
-    </View>
-    
+    </View>  
   );
 }

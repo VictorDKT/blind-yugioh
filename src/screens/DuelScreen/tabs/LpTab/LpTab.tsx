@@ -34,7 +34,7 @@ export function LpTab(props: ILpTabProps) {
       <AccessibleSelectInput
         label={"Jogador"}
         placeholder={"Selecione uma opção"}
-        acessibilityLabel={
+        accessibilityLabel={
           "Selecione o jogador ao qual deseja reduzir ou aumentar os pontos de vida"
         }
         defaultValue={"player1Lp"}
@@ -70,7 +70,7 @@ export function LpTab(props: ILpTabProps) {
         label={"Operação"}
         placeholder={"Selecione uma opção"}
         defaultValue={"decrease"}
-        acessibilityLabel={
+        accessibilityLabel={
           "Selecione a operação que deseja realizar com os pontos de vida. Aumentar ou Reduzir."
         }
         options={[

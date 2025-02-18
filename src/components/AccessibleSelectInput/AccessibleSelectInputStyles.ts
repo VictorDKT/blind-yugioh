@@ -14,15 +14,16 @@ const styles: Record<string, Record<string, unknown>> = StyleSheet.create({
 
   input: {
     fontSize: 18,
+    padding: 0
   },
 
   selectContainer: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: '#000000',
     borderRadius: 8,
     backgroundColor: '#fff',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
   },
 });
 

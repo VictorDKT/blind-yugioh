@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, Button as ReactButton } from "react-native";
 import styles from "./ButtonStyles";
 
 interface IButtonProps {

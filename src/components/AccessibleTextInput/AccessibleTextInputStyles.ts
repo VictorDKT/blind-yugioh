@@ -15,7 +15,7 @@ const styles: Record<string, Record<string, unknown>> = StyleSheet.create({
   input: {
     fontSize: 16,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#000000",
     borderRadius: 8,
     paddingVertical: 15,
     paddingHorizontal: 15,

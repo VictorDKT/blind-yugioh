@@ -19,7 +19,7 @@ export function DuelConfigScreen(props: ScreenProps) {
       <View style={styles.pageContainer}>
         <Button
           label={"Voltar"}
-          accessibilityLabel={"Clique aqui para voltar ao menu principal"}
+          accessibilityLabel={"Voltar ao menu principal"}
           callback={() => {
             props.navigation.goBack();
           }}
@@ -61,7 +61,7 @@ export function DuelConfigScreen(props: ScreenProps) {
         />
         <Button
           label={"Iniciar duelo"}
-          accessibilityLabel={"Clique aqui para iniciar o duelo"}
+          accessibilityLabel={"Iniciar o duelo"}
           callback={() => {
             const missingFields: string[] = [];
             const fieldsNameMap: Record<string, string> = {

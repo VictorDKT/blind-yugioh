@@ -31,7 +31,7 @@ export function DuelScreen(props: ScreenProps) {
         {tab === "lp" && (
           <Button
             label={"Voltar"}
-            accessibilityLabel={"Clique aqui para voltar ao menu principal"}
+            accessibilityLabel={"Voltar ao menu principal"}
             callback={() => {
               props.navigation.navigate("HomeScreen");
             }}
@@ -40,7 +40,7 @@ export function DuelScreen(props: ScreenProps) {
         {(tab === "cardScanner" || tab === "cardData") && (
           <Button
             label={"Visualizar pontos de vida"}
-            accessibilityLabel={"Clique aqui para ir à tela de pontos de vida"}
+            accessibilityLabel={"Ir para a tela de visualizar pontos de vida"}
             callback={() => {
               setTab("lp");
             }}
@@ -50,7 +50,7 @@ export function DuelScreen(props: ScreenProps) {
           <Button
             label={tab === "cardData" ? "Ler outra carta" : "Ler uma carta"}
             accessibilityLabel={
-              "Clique aqui para ir à tela de leitura de cartas"
+              "Ir à tela de leitura de cartas"
             }
             callback={() => {
               setTab("cardScanner");

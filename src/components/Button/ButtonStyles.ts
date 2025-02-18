@@ -17,6 +17,8 @@ const styles: Record<string, Record<string, unknown>> = StyleSheet.create({
     },
 
     smallButton: {
+        height: 48,
+        justifyContent: "center",
         marginBottom: 15,
         padding: 10,
         borderRadius: 10,
@@ -27,11 +29,13 @@ const styles: Record<string, Record<string, unknown>> = StyleSheet.create({
 
     smallButtonText: {
         fontFamily: "Roboto-Bold",
-        fontSize: 15,
+        fontSize: 18,
         color: "white",
     },
 
     footerButton: {
+        height: 48,
+        justifyContent: "center",
         padding: 10,
         borderRadius: 10,
         backgroundColor: "red",
@@ -41,7 +45,7 @@ const styles: Record<string, Record<string, unknown>> = StyleSheet.create({
 
     footerButtonText: {
         fontFamily: "Roboto-Bold",
-        fontSize: 15,
+        fontSize: 18,
         color: "white",
     },
 })

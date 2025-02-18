@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { ScreenProps } from "../../types/ScreenProps";
 import { Text, View } from "react-native";
 import { downloadData } from "../../utils/downloadData";
-import { setCardData } from "../../utils/cardDataManager";
-import { CardInterface } from "../../types/CardInterface";
 import * as FileSystem from "expo-file-system";
 import { Button } from "../../components/Button/Button";
 import styles from "./HomeScreenStyles";
@@ -13,6 +11,13 @@ export function HomeScreen(props: ScreenProps) {
   const [loading, setLoading] = useState(false);
   const [hasPermission, setHasPermission] = useState(false);
   const fileUri = `${FileSystem.documentDirectory}data.json`;
+
+  useEffect(() => {
+    (async () => {
+      const permissionGranted = await requestStoragePermission();
+      setHasPermission(permissionGranted ? true : false);
+    })();
+  }, []);
 
   useEffect(() => {
     if(hasPermission) {
@@ -32,16 +37,9 @@ export function HomeScreen(props: ScreenProps) {
     }
   }, [hasPermission]);
 
-  useEffect(() => {
-    (async () => {
-      const permissionGranted = await requestStoragePermission();
-      setHasPermission(permissionGranted ? true : false);
-    })();
-  }, []);
-
   return (
     <View style={styles.page}>
-      <Text style={styles.pageTitle}>Blind Yugioh</Text>
+      <Text style={styles.pageTitle}>Blind Yu-Gi-Oh!</Text>
       {hasPermission 
         ?
           <View style={{ width: "100%", alignItems: "center" }}>
@@ -52,17 +50,15 @@ export function HomeScreen(props: ScreenProps) {
                 <Button
                   aditionalStyles={{ fontSize: 20 }}
                   label={"Duelo"}
-                  accessibilityLabel={"Clique aqui para ir à tela de duelo"}
+                  accessibilityLabel={"Ir para a tela de duelo"}
                   callback={() => {
                     props.navigation.navigate("DuelConfigScreen");
                   }}
                 />
                 <Button
                   aditionalStyles={{ fontSize: 20 }}
-                  label={"Lista de cartas"}
-                  accessibilityLabel={
-                    "Clique aqui para ir à tela de listagem de cartas"
-                  }
+                  label={"Listagem de cartas"}
+                  accessibilityLabel={"Ir para a tela de listagem de cartas"}
                   callback={() => {
                     props.navigation.navigate("ListScreen");
                   }}
@@ -70,9 +66,7 @@ export function HomeScreen(props: ScreenProps) {
                 <Button
                   aditionalStyles={{ fontSize: 20 }}
                   label={"Leitor de cartas"}
-                  accessibilityLabel={
-                    "Clique aqui para ir à tela de leitura de cartas"
-                  }
+                  accessibilityLabel={"Ir para a tela de leitor de cartas"}
                   callback={() => {
                     props.navigation.navigate("CardScannerScreen");
                   }}
@@ -82,10 +76,10 @@ export function HomeScreen(props: ScreenProps) {
           </View>
         :
           <View style={{ width: "100%", alignItems: "center" }}>
-            <Text style={styles.loader}>A permissão de acesso aos seus arquivos é necessária para o aplicativo funcionar</Text>
+            <Text style={styles.loader}>A permissão de acesso aos seus arquivos é necessária para que o aplicativo possa salvar as imagens de QR Code</Text>
             <Button 
               label={"Conceder permissão"}
-              accessibilityLabel={"Clique aqui para permitir que o aplicativo salve arquivos no seus dispositivo"}
+              accessibilityLabel={"Conceder permissão de acesso aos arquivos no seus dispositivo"}
               callback={async ()=>{
                 const permissionGranted = await requestStoragePermission();
                 setHasPermission(permissionGranted ? true : false);

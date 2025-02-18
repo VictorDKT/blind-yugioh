@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text } from "react-native";
-import RNPickerSelect from "react-native-picker-select";
+//import RNPickerSelect from "react-native-picker-select";
+import { Picker } from "@react-native-picker/picker";
 import { IOption } from "../../types/IOption";
 import styles from "./AccessibleSelectInputStyles";
 
@@ -8,7 +9,7 @@ interface IAccessibleSelectInputProps {
   callback: (value: string) => void;
   label: string;
   placeholder: string;
-  acessibilityLabel: string;
+  accessibilityLabel: string;
   options: IOption[];
   defaultValue?: string;
 }
@@ -27,22 +28,41 @@ export function AccessibleSelectInput(props: IAccessibleSelectInputProps) {
       <Text style={styles.label}>{props.label}:</Text>
       <View
         style={styles.selectContainer}
-        accessibilityLabel={props.acessibilityLabel}
+        accessibilityLabel={props.accessibilityLabel}
       >
-        <RNPickerSelect
-          items={props.options}
+        <Picker
           style={styles.input}
-          useNativeAndroidPickerStyle={false}
-          value={selectedValue}
+          selectedValue={selectedValue}
+          onValueChange={(itemValue, itemIndex) => {
+            props.callback(itemValue);
+            setSelectedValue(itemValue)
+          }}
+        >
+          <Picker.Item label={props.placeholder} value="" />
+          {
+            props.options.map(option=>{
+              return (
+                <Picker.Item key={option.value} label={option.label} value={option.value} />
+              )
+            })
+          }
+        </Picker>
+        {/*<RNPickerSelect
+          items={[
+            ...props.options
+          ]}
           placeholder={{
             label: props.placeholder,
             value: "",
           }}
+          style={{inputIOS: styles.input, inputAndroid: styles.input}}
+          useNativeAndroidPickerStyle={false}
+          value={selectedValue}
           onValueChange={(value: string) => {
             setSelectedValue(value);
             props.callback(value);
           }}
-        />
+        />*/}
       </View>
     </View>
   );

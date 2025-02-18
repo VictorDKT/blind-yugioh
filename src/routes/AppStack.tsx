@@ -19,8 +19,8 @@ const routes: Route[] = [
   { name: "HomeScreen", component: HomeScreen },
   { name: "ListScreen", component: ListScreen },
   { name: "CardScannerScreen", component: CardScannerScreen },
-  { name: "DuelConfigScreen", component: DuelConfigScreen },
   { name: "DuelScreen", component: DuelScreen },
+  { name: "DuelConfigScreen", component: DuelConfigScreen },
 ];
 
 function AppStack() {

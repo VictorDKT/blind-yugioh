@@ -187,6 +187,7 @@ export function CardTab(props: CardTab) {
             Aponte a câmera para a parte frontal da carta e aguarde alguns segundos
           </Text>
           <CameraView
+            accessibilityLabel={"Leitor de QR Code. Aponte a câmera para o código."}
             style={{ width: "100%", flex: 1 }}
             barcodeScannerSettings={{
               barcodeTypes: ["qr", "pdf417"],

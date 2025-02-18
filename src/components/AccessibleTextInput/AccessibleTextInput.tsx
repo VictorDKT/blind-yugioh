@@ -27,14 +27,12 @@ export function AccessibleTextInput(props: IAccessibleTextInputProps) {
         keyboardType={props.type === "number" ? "numeric" : "default"}
         style={styles.input}
         placeholder={props.placeholder}
-        placeholderTextColor="#a1a1a1"
+        placeholderTextColor="#000000"
         value={value}
         onChangeText={(value) => {
           props.callback(value);
           setValue(value);
         }}
-        accessible={true}
-        accessibilityLabel={props.acessibilityLabel}
       />
     </View>
   );
