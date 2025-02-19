@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ScreenProps } from "../../types/ScreenProps";
-import { Text, View, AccessibilityInfo, TextInput } from "react-native";
+import { Text, View, AccessibilityInfo, ScrollView } from "react-native";
 import { CardInterface } from "../../types/CardInterface";
 import { searchCards } from "../../utils/searchCards";
 import {
@@ -11,7 +11,6 @@ import {
   levelOptions,
   typeOptions,
 } from "../../utils/consts";
-import { ScrollView } from "react-native-gesture-handler";
 import QRCode from "react-native-qrcode-svg";
 import ViewShot from "react-native-view-shot";
 import { saveQRCodeImage } from "../../utils/saveQrCodeImage";
