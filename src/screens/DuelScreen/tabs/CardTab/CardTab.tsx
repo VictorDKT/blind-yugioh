@@ -184,7 +184,7 @@ export function CardTab(props: CardTab) {
       ) : (
         <View style={{ height: 400, width: "100%" }}>
           <Text style={styles.cardDataText}>
-            Aponte a câmera para a parte frontal da carta e aguarde alguns segundos
+            Aponte a câmera para a parte frontal da carta e aguarde alguns segundos para escanear a carta
           </Text>
           <CameraView
             accessibilityLabel={"Leitor de QR Code. Aponte a câmera para o código."}
