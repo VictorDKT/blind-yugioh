@@ -26,13 +26,13 @@ export function CardScannerScreen(props: ScreenProps) {
 
   useEffect(()=>{
     if(code) {
-      AccessibilityInfo.announceForAccessibility("Carta escaneada com sucesso. Aguarde enquanto as informações da carta são carregadas.");
+      AccessibilityInfo.announceForAccessibility("Carta escaneada com sucesso.");
       getCardByCode(code as string).then((card) => {
         setEntity(card);
         setScanned(true);
         setCode(null);
         setLoading(false);
-        AccessibilityInfo.announceForAccessibility("Os dados da carta foram carregados.");
+        //AccessibilityInfo.announceForAccessibility("Os dados da carta foram carregados.");
       });
     }
   }, [code])
@@ -80,7 +80,7 @@ export function CardScannerScreen(props: ScreenProps) {
       <View style={styles.pageContainer}>
         <Button
           label={"Voltar"}
-          accessibilityLabel={"Voltar ao menu principal"}
+          accessibilityLabel={scanned && entity ? "Voltar para o escaner de cartas" : "Voltar ao menu principal"}
           callback={() => {
             if (scanned) {
               setScanned(false);

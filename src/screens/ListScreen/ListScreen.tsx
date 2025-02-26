@@ -209,8 +209,8 @@ export function ListScreen(props: ScreenProps) {
             }}
           />
           <AccessibleSelectInput
-            label={"Nível/Classe/Valor link"}
-            placeholder={"Todos os níveis"}
+            label={"Nível, classe ou valor link"}
+            placeholder={"Todos os níveis, classes e valores link"}
             accessibilityLabel={
               "Selecione o valor do nivel, classe ou valor link da carta que deseja procurar"
             }
@@ -283,6 +283,7 @@ export function ListScreen(props: ScreenProps) {
                 setPageNumber(1);
                 scrollViewRef.current?.scrollTo({ y: 0, animated: true });
                 setLoading(false);
+                AccessibilityInfo.announceForAccessibility("Lista de cartas filtrada com sucesso.");
               });
               setTab("list");
             }}
