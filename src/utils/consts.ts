@@ -1,4 +1,4 @@
-export const cardFrameMap: Record<string, string> = {
+export const characteristicsMap: Record<string, string> = {
   "Effect Monster": "Monstro de efeito",
   "Flip Effect Monster": "Monstro de efeito",
   "Flip Tuner Effect Monster": "Monstro de efeito regulador",
@@ -29,7 +29,7 @@ export const cardFrameMap: Record<string, string> = {
   "Synchro Pendulum Effect Monster": "Monstro de efeito sincro pêndulo",
   "XYZ Pendulum Effect Monster": "Monstro de efeito xyz pêndulo",
   "Pendulum Effect Fusion Monster": "Monstro de efeito fusão pêndulo",
-  Token: "Ficha",
+  "Token": "Ficha",
 };
 
 export const cardTypeMap: Record<string, string> = {
@@ -115,32 +115,53 @@ export const attributeOptions = [
   { value: "WIND", label: "Vento" },
   { value: "EARTH", label: "Terra" },
   { value: "DIVINE", label: "Divino" },
-  { value: "SPELL", label: "Magia" },
-  { value: "TRAP", label: "Armadilha" },
 ];
 
-export const frameOptions = [
-  { label: "Normal", value: "Normal" },
-  { label: "Effect", value: "Effect" },
-  { label: "Fusion", value: "Fusion" },
-  { label: "Ritual", value: "Ritual" },
-  { label: "Sinchro", value: "Synchro" },
-  { label: "Xyz", value: "Xyz" },
-  { label: "Pêndulo", value: "Pendulum" },
-  { label: "Link", value: "Link" },
+export const categoryOptions = [
+  { label: "Normal", value: "normal" },
+  { label: "Efeito", value: "effect" },
+  { label: "Fusão", value: "fusion" },
+  { label: "Ritual", value: "ritual" },
+  { label: "Sinchro", value: "synchro" },
+  { label: "Xyz", value: "xyz" },
+  { label: "Pêndulo", value: "pendulum" },
+  { label: "Link", value: "link" },
+  { label: "Magia", value: "spell" },
+  { label: "Armadilha", value: "trap" },
+  { label: "Ficha", value: "token" },
+  { label: "Habilidade", value: "skill" },
 ];
 
 export const levelOptions = [
+  { label: "0", value: "0" },
   { label: "1", value: "1" },
-  { label: "2", value: "1" },
-  { label: "3", value: "1" },
-  { label: "4", value: "1" },
-  { label: "5", value: "1" },
-  { label: "6", value: "1" },
-  { label: "7", value: "1" },
-  { label: "8", value: "1" },
-  { label: "9", value: "1" },
-  { label: "10", value: "1" },
-  { label: "11", value: "1" },
-  { label: "12", value: "1" },
+  { label: "2", value: "2" },
+  { label: "3", value: "3" },
+  { label: "4", value: "4" },
+  { label: "5", value: "5" },
+  { label: "6", value: "6" },
+  { label: "7", value: "7" },
+  { label: "8", value: "8" },
+  { label: "9", value: "9" },
+  { label: "10", value: "10" },
+  { label: "11", value: "11" },
+  { label: "12", value: "12" },
+  { label: "13", value: "13" },
+];
+
+export const scaleOptions = [
+  { label: "0", value: "0" },
+  { label: "1", value: "1" },
+  { label: "2", value: "2" },
+  { label: "3", value: "3" },
+  { label: "4", value: "4" },
+  { label: "5", value: "5" },
+  { label: "6", value: "6" },
+  { label: "7", value: "7" },
+  { label: "8", value: "8" },
+  { label: "9", value: "9" },
+  { label: "10", value: "10" },
+  { label: "11", value: "11" },
+  { label: "12", value: "12" },
+  { label: "13", value: "13" },
 ];

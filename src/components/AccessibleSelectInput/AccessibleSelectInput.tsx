@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { View, Text } from "react-native";
-//import RNPickerSelect from "react-native-picker-select";
 import { Picker } from "@react-native-picker/picker";
 import { IOption } from "../../types/IOption";
 import styles from "./AccessibleSelectInputStyles";
@@ -47,22 +46,6 @@ export function AccessibleSelectInput(props: IAccessibleSelectInputProps) {
             })
           }
         </Picker>
-        {/*<RNPickerSelect
-          items={[
-            ...props.options
-          ]}
-          placeholder={{
-            label: props.placeholder,
-            value: "",
-          }}
-          style={{inputIOS: styles.input, inputAndroid: styles.input}}
-          useNativeAndroidPickerStyle={false}
-          value={selectedValue}
-          onValueChange={(value: string) => {
-            setSelectedValue(value);
-            props.callback(value);
-          }}
-        />*/}
       </View>
     </View>
   );

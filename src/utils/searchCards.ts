@@ -8,47 +8,55 @@ interface ISearchCardsProps {
 
 export async function searchCards(props: ISearchCardsProps) {
   const entitiesPerPage = 10;
-  const cardsData = (await getCardData()) as CardInterface[];
+  let cardsData = (await getCardData()) as CardInterface[];
   const pageNumber = props.pageNumber ? props.pageNumber : 1;
-  let filteredData: CardInterface[] = [];
   const hasFilter = hasValidFilter(props.filters);
 
   if (hasFilter) {
     Object.keys(props.filters).forEach((key) => {
       if (
-        (props.filters[key] && !isNaN(props.filters[key] as number)) ||
-        props.filters[key].toString().length > 0
+        (props.filters[key] && props.filters[key].toString().length > 0)
       ) {
-        cardsData.forEach((card) => {
+        cardsData = cardsData.filter((card) => {
           if (key === "name") {
             if (card.name.toLocaleLowerCase().includes((props.filters[key] as string).toLocaleLowerCase())) {
-              filteredData.push(card);
+              return true;
+            } else {
+              return false;
+            }
+          } if (key === "category") {
+            if (card.category.includes((props.filters[key] as string))) {
+              return true;
+            } else {
+              return false;
             }
           } else if (key === "level") {
             if (
-              card.level === props.filters[key] ||
-              card.linkRate === props.filters[key]
+              (card.level !== "0" && (card.level === props.filters[key] || card.linkRate === props.filters[key])) ||
+              (card.level === "0" && card.category !== "link" && (card.level === props.filters[key] || card.linkRate === props.filters[key]))
             ) {
-              filteredData.push(card);
+              return true;
+            } else {
+              return false;
             }
           } else {
-            if (card.name === props.filters[key]) {
-              filteredData.push(card);
+            if ((card as unknown as Record<string, unknown>)[key] === props.filters[key]) {
+              return true;
+            } else {
+              return false;
             }
           }
         });
       }
     });
-  } else {
-    filteredData = cardsData;
   }
 
   return {
-    data: filteredData.slice(
+    data: cardsData.slice(
       (pageNumber - 1) * entitiesPerPage,
       (pageNumber - 1) * entitiesPerPage + entitiesPerPage
     ),
-    numberOfPages: Math.ceil(filteredData.length / entitiesPerPage),
+    numberOfPages: Math.ceil(cardsData.length / entitiesPerPage),
   };
 }
 
@@ -60,8 +68,7 @@ function hasValidFilter(obj: Record<string, unknown>): boolean {
       if (
         value !== null &&
         value !== undefined &&
-        value !== "" &&
-        typeof value !== "number"
+        value !== ""
       ) {
         return true;
       }

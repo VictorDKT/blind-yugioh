@@ -4,7 +4,7 @@ import { getCardByCode } from "../../../../utils/getCardByCode";
 import { CardInterface } from "../../../../types/CardInterface";
 import {
   cardAttributeMap,
-  cardFrameMap,
+  characteristicsMap,
   cardTypeMap,
 } from "../../../../utils/consts";
 import { Camera, CameraView } from "expo-camera";
@@ -28,14 +28,13 @@ export function CardTab(props: CardTab) {
   
   useEffect(()=>{
     if(code) {
-      AccessibilityInfo.announceForAccessibility("Carta escaneada com sucesso. Aguarde enquanto as informações da carta são carregadas.");
+      AccessibilityInfo.announceForAccessibility("Carta escaneada com sucesso.");
       getCardByCode(code as string).then((card) => {
         setEntity(card);
         props.setScanned(true);
         props.setTab("cardData");
         setCode(null);
         setLoading(false);
-        AccessibilityInfo.announceForAccessibility("Os dados da carta foram carregados.");
       });
     }
   }, [code])
@@ -96,25 +95,25 @@ export function CardTab(props: CardTab) {
             }
             callback={() => {
               AccessibilityInfo.announceForAccessibility(
-                cardFrameMap[entity.frameType]
-                  ? cardFrameMap[entity.frameType]
-                  : entity.frameType
+                characteristicsMap[entity.characteriscs]
+                  ? characteristicsMap[entity.characteriscs]
+                  : entity.characteriscs
               );
             }}
           />
-          {entity.type.includes("Monster") && (
+          {entity.characteriscs.includes("Monster") && (
             <Button
               label={
                 entity.linkRate
                   ? "Valor link"
-                  : entity.frameType === "xyz"
+                  : entity.category === "xyz"
                   ? "Classe"
                   : "Nível"
               }
               accessibilityLabel={`Clique aqui para ouvir o ${
                 entity.linkRate
                   ? "valor link"
-                  : entity.frameType === "xyz"
+                  : entity.category === "xyz"
                   ? "classe"
                   : "nível"
               } da carta`}
@@ -127,36 +126,25 @@ export function CardTab(props: CardTab) {
               }}
             />
           )}
-          <Button
-            label={"Texto da carta"}
-            accessibilityLabel={"Clique aqui para ouvir o texto da carta"}
-            callback={() => {
-              AccessibilityInfo.announceForAccessibility(entity.description);
-            }}
-          />
-          {entity.type.includes("Monster") && (
+          {entity.category.includes("link") && 
             <Button
-              label={"Ataque"}
-              accessibilityLabel={"Clique aqui para ouvir o ataque da carta"}
+              label={"Setas link"}
+              accessibilityLabel={"Clique aqui para ouvir as setas link da carta"}
               callback={() => {
-                AccessibilityInfo.announceForAccessibility(
-                  entity.atk.toString()
-                );
+                AccessibilityInfo.announceForAccessibility(entity.linkMarkers as string);
               }}
             />
-          )}
-          {entity.type.includes("Monster") && !isNaN(entity.def as number) && (
+          }
+          {entity.scale && 
             <Button
-              label={"Defesa"}
-              accessibilityLabel={"Clique aqui para ouvir a defesa da carta"}
+              label={"Escala pêndulo"}
+              accessibilityLabel={"Clique aqui para ouvir a escala pêndulo da carta"}
               callback={() => {
-                AccessibilityInfo.announceForAccessibility(
-                  (entity.def as number).toString()
-                );
+                AccessibilityInfo.announceForAccessibility(entity.scale as string);
               }}
             />
-          )}
-          {entity.type.includes("Monster") && !isNaN(entity.def as number) && (
+          }
+          {entity.characteriscs.includes("Monster") && (
             <Button
               label={"Atributo"}
               accessibilityLabel={"Clique aqui para ouvir o atributo da carta"}
@@ -174,12 +162,41 @@ export function CardTab(props: CardTab) {
             accessibilityLabel={"Clique aqui para ouvir o tipo da carta"}
             callback={() => {
               AccessibilityInfo.announceForAccessibility(
-                cardTypeMap[entity.race]
-                  ? cardTypeMap[entity.race]
-                  : entity.race
+                cardTypeMap[entity.type]
+                  ? cardTypeMap[entity.type]
+                  : entity.type
               );
             }}
           />
+          <Button
+            label={"Texto da carta"}
+            accessibilityLabel={"Clique aqui para ouvir o texto da carta"}
+            callback={() => {
+              AccessibilityInfo.announceForAccessibility(entity.description);
+            }}
+          />
+          {entity.characteriscs.includes("Monster") && (
+            <Button
+              label={"Ataque"}
+              accessibilityLabel={"Clique aqui para ouvir o ataque da carta"}
+              callback={() => {
+                AccessibilityInfo.announceForAccessibility(
+                  entity.atk as string
+                );
+              }}
+            />
+          )}
+          {entity.characteriscs.includes("Monster") && entity.category !== "link" && (
+            <Button
+              label={"Defesa"}
+              accessibilityLabel={"Clique aqui para ouvir a defesa da carta"}
+              callback={() => {
+                AccessibilityInfo.announceForAccessibility(
+                  entity.def as string
+                );
+              }}
+            />
+          )}
         </View>
       ) : (
         <View style={{ height: 400, width: "100%" }}>

@@ -5,20 +5,17 @@ import { CardInterface } from "../../types/CardInterface";
 import { searchCards } from "../../utils/searchCards";
 import {
   attributeOptions,
-  cardAttributeMap,
-  cardFrameMap,
-  cardTypeMap,
+  categoryOptions,
   levelOptions,
+  scaleOptions,
   typeOptions,
 } from "../../utils/consts";
-import QRCode from "react-native-qrcode-svg";
-import ViewShot from "react-native-view-shot";
-import { saveQRCodeImage } from "../../utils/saveQrCodeImage";
 import { Button } from "../../components/Button/Button";
 import styles from "./ListScreenStyles";
 import { AccessibleTextInput } from "../../components/AccessibleTextInput/AccessibleTextInput";
 import { AccessibleSelectInput } from "../../components/AccessibleSelectInput/AccessibleSelectInput";
 import { AccessibleSpinner } from "../../components/LoadSpinner/LoadSpinner";
+import { CardBox } from "./CardBox/CardBox";
 
 export function ListScreen(props: ScreenProps) {
   const [entities, setEntities] = useState<CardInterface[]>([]);
@@ -54,85 +51,17 @@ export function ListScreen(props: ScreenProps) {
           />
           <Button
             label={"Filtrar"}
-            accessibilityLabel="Adicionar filtros de busca"
+            accessibilityLabel="Filtrar cartas por nome ou características"
             callback={() => {
               setTab("filter");
             }}
           />
           {entities.map((entity) => {
             return (
-              <View style={styles.cardDataContainer} key={entity.cardCode}>
-                <Text style={styles.cardDataText}>Nome: {entity.name}</Text>
-                <Text style={styles.cardDataText}>
-                  {cardFrameMap[entity.type]
-                    ? cardFrameMap[entity.type]
-                    : entity.race}
-                </Text>
-                {entity.type.includes("Monster") && (
-                  <Text style={styles.cardDataText}>
-                    {entity.linkRate
-                      ? "Valor link"
-                      : entity.frameType === "xyz"
-                      ? "Classe"
-                      : "Nível"}
-                    : {entity.linkRate ? entity.linkRate : entity.level}
-                  </Text>
-                )}
-                {entity.type.includes("Monster") && (
-                  <Text style={styles.cardDataText}>
-                    {`Atributo: ${cardAttributeMap[entity.attribute] ? cardAttributeMap[entity.attribute] : entity.attribute}`}
-                  </Text>
-                )}
-                <Text style={styles.cardDataText}>
-                  {`Tipo: ${cardTypeMap[entity.race] ? cardTypeMap[entity.race] : entity.race}`}
-                </Text>
-                {entity.type.includes("Monster") && (
-                  <Text style={styles.cardDataText}>
-                    {"Ataque: " + entity.atk}
-                  </Text>
-                )}
-                {entity.type.includes("Monster") &&
-                  entity.frameType !== "link" && (
-                    <Text style={styles.cardDataText}>
-                      {"Defesa: " + entity.def}
-                    </Text>
-                  )}
-                <ViewShot
-                  ref={(ref) => (qrRefs.current[entity.cardCode] = ref)}
-                  style={styles.qrCodeContainer}
-                >
-                  <QRCode
-                    value={entity.cardCode}
-                    size={200}
-                    color="black"
-                    backgroundColor="white"
-                  />
-                </ViewShot>
-                <Button
-                  label={"Texto da carta"}
-                  customClassName={"smallButton"}
-                  customTextClassName={"smallButtonText"}
-                  accessibilityLabel={"Ouvir o texto da carta"}
-                  callback={() => {
-                    AccessibilityInfo.announceForAccessibility(
-                      entity.description
-                    );
-                  }}
-                />
-                <Button
-                  label={"Gerar QR Code"}
-                  customClassName={"smallButton"}
-                  customTextClassName={"smallButtonText"}
-                  accessibilityLabel={"Gerar o QR Code da carta"}
-                  aditionalStyles={{ marginBottom: 0 }}
-                  callback={() => {
-                    saveQRCodeImage(
-                      qrRefs.current[entity.cardCode],
-                      entity.name
-                    );
-                  }}
-                />
-              </View>
+              <CardBox
+                entity={entity}
+                qrRefs={qrRefs}
+              />
             );
           })}
           <View style={styles.footer}>
@@ -151,6 +80,7 @@ export function ListScreen(props: ScreenProps) {
                     setPageNumber(pageNumber - 1);
                     scrollViewRef.current?.scrollTo({ y: 0, animated: true });
                     setLoading(false);
+                    AccessibilityInfo.announceForAccessibility("Página caregada com sucesso")
                   });
                 }}
               />
@@ -177,6 +107,7 @@ export function ListScreen(props: ScreenProps) {
                     setPageNumber(pageNumber + 1);
                     scrollViewRef.current?.scrollTo({ y: 0, animated: true });
                     setLoading(false);
+                    AccessibilityInfo.announceForAccessibility("Página caregada com sucesso")
                   });
                 }}
               />
@@ -223,6 +154,34 @@ export function ListScreen(props: ScreenProps) {
             }}
           />
           <AccessibleSelectInput
+            label={"Escala pêndulo"}
+            placeholder={"Todos as escalas"}
+            accessibilityLabel={
+              "Selecione o valor da escala pêndulo da carta que deseja procurar"
+            }
+            options={scaleOptions}
+            defaultValue={filters.scale ? filters.scale as string : ""}
+            callback={(value) => {
+              const newFilters = { ...filters };
+              newFilters["scale"] = value;
+              setFilters(newFilters);
+            }}
+          />
+          <AccessibleSelectInput
+            label={"Categoria"}
+            placeholder={"Todas as categorias"}
+            accessibilityLabel={
+              "Selecione a categoria que deseja procurar"
+            }
+            options={categoryOptions}
+            defaultValue={filters.category ? filters.category as string : ""}
+            callback={(value) => {
+              const newFilters = { ...filters };
+              newFilters["category"] = value;
+              setFilters(newFilters);
+            }}
+          />
+          <AccessibleSelectInput
             label={"Atributo"}
             placeholder={"Todos os atributos"}
             accessibilityLabel={
@@ -256,7 +215,7 @@ export function ListScreen(props: ScreenProps) {
             type={"number"}
             callback={(value) => {
               const newFilters = { ...filters };
-              newFilters["atk"] = value;
+              newFilters["atk"] = value.toString();
               setFilters(newFilters);
             }}
           />
@@ -268,13 +227,13 @@ export function ListScreen(props: ScreenProps) {
             type={"number"}
             callback={(value) => {
               const newFilters = { ...filters };
-              newFilters["def"] = value;
+              newFilters["def"] = value.toString();
               setFilters(newFilters);
             }}
           />
           <Button
             label={"Filtrar"}
-            accessibilityLabel="Filtrar buscar"
+            accessibilityLabel="Salvar filtros e realizar busca"
             callback={() => {
               setLoading(true);
               searchCards({ pageNumber: 1, filters }).then((response) => {

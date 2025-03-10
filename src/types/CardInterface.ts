@@ -1,15 +1,15 @@
 export interface CardInterface {
   cardCode: string;
   name: string;
-  type: string;
-  frameType: string;
+  characteriscs: string;
+  category: string;
   description: string;
-  atk: number;
-  def?: number;
+  atk?: string;
+  def?: string;
   level?: string;
-  race: string;
+  type: string;
   attribute: string;
-  scale?: number;
+  scale?: string;
   linkRate?: string;
-  linkMarkers?: string[];
+  linkMarkers?: string;
 }

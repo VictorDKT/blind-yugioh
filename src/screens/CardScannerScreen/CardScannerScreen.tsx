@@ -5,7 +5,7 @@ import { getCardByCode } from "../../utils/getCardByCode";
 import { CardInterface } from "../../types/CardInterface";
 import {
   cardAttributeMap,
-  cardFrameMap,
+  characteristicsMap,
   cardTypeMap,
 } from "../../utils/consts";
 import ViewShot from "react-native-view-shot";
@@ -32,7 +32,6 @@ export function CardScannerScreen(props: ScreenProps) {
         setScanned(true);
         setCode(null);
         setLoading(false);
-        //AccessibilityInfo.announceForAccessibility("Os dados da carta foram carregados.");
       });
     }
   }, [code])
@@ -94,11 +93,32 @@ export function CardScannerScreen(props: ScreenProps) {
           <View style={styles.cardDataContainer}>
             <Text style={styles.cardDataText}>Nome: {entity.name}</Text>
             <Text style={styles.cardDataText}>
-              {cardFrameMap[entity.frameType]
-                ? cardFrameMap[entity.frameType]
-                : entity.frameType}
+              {characteristicsMap[entity.characteriscs]
+                ? characteristicsMap[entity.characteriscs]
+                : entity.characteriscs}
             </Text>
-            {entity.type.includes("Monster") && (
+            
+            {entity.characteriscs.includes("Monster") && (
+              <Text style={styles.cardDataText}>
+                {entity.linkRate
+                  ? "Valor link"
+                  : entity.category === "xyz"
+                  ? "Classe"
+                  : "Nível"}
+                : {entity.linkRate ? entity.linkRate : entity.level}
+              </Text>
+            )}
+            {entity.category.includes("link") && (
+              <Text style={styles.cardDataText}>
+                {"Setas link: " + entity.linkMarkers}
+              </Text>
+            )}
+            {entity.scale && (
+              <Text style={styles.cardDataText}>
+                {`Escala pêndulo: ${entity.scale}`}
+              </Text>
+            )}
+            {entity.characteriscs.includes("Monster") && (
               <Text style={styles.cardDataText}>
                 Atributo:{" "}
                 {cardAttributeMap[entity.attribute]
@@ -108,25 +128,15 @@ export function CardScannerScreen(props: ScreenProps) {
             )}
             <Text style={styles.cardDataText}>
               Tipo:{" "}
-              {cardTypeMap[entity.race]
-                ? cardTypeMap[entity.race]
-                : entity.race}
+              {cardTypeMap[entity.type]
+                ? cardTypeMap[entity.type]
+                : entity.type}
             </Text>
-            {entity.type.includes("Monster") && (
-              <Text style={styles.cardDataText}>
-                {entity.linkRate
-                  ? "Valor link"
-                  : entity.frameType === "xyz"
-                  ? "Classe"
-                  : "Nível"}
-                : {entity.linkRate ? entity.linkRate : entity.level}
-              </Text>
-            )}
-            {entity.type.includes("Monster") && (
+            {entity.characteriscs.includes("Monster") && (
               <Text style={styles.cardDataText}>{"Ataque: " + entity.atk}</Text>
             )}
-            {entity.type.includes("Monster") &&
-              !isNaN(entity.def as number) && (
+            {entity.characteriscs.includes("Monster") &&
+              entity.category !== "link" && (
                 <Text style={styles.cardDataText}>
                   {"Defesa: " + entity.def}
                 </Text>

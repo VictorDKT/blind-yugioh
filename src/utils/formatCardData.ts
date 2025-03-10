@@ -1,27 +1,27 @@
 import { CardInterface } from "../types/CardInterface";
+import { formatArrayToSentence } from "./formatArrayToSentence";
 
 export function formatCardData(cardList: Record<string, unknown>[]) {
   return cardList.map((card) => {
     return {
       cardCode: (card.id as number).toString(),
       name: card.name,
-      type: card.type,
-      frameType: card.frameType,
+      characteriscs: card.type,
+      category: card.frameType,
       description: card.desc,
-      atk: card.atk,
-      def: card.def,
+      atk: typeof card.atk === "number" ? card.atk === -1 ? "?" : card.atk.toString() : undefined,
+      def: typeof card.def === "number" ? card.atk === -1 ? "?" : card.def.toString() : undefined,
       level: card.level ? card.level.toString() : undefined,
-      race: card.race,
+      type: card.race,
       attribute: card.attribute,
-      scale: card.scale,
+      scale: card.scale ? card.scale.toString() : undefined,
       linkRate: card.linkval ? card.linkval.toString() : undefined,
-      linkMarkers: formatLinkMarkersLabel(card.linkMarkers as string[]),
+      linkMarkers: card.linkmarkers && (card.linkmarkers as string[]).length > 0 ? formatLinkMarkersLabel(card.linkmarkers as string[]) : undefined,
     } as CardInterface;
   });
 }
 
-function formatLinkMarkersLabel(linkMarkers?: string[]) {
-  let linkMarkersLabel = "";
+function formatLinkMarkersLabel(linkMarkers: string[]) {
   const linkMarkersLabels: Record<string, string> = {
     Top: "Cima",
     Bottom: "Baixo",
@@ -32,14 +32,7 @@ function formatLinkMarkersLabel(linkMarkers?: string[]) {
     "Top-Left": "Superior esquerda",
     "Top-Right": "Superior direita",
   };
+  const translatedLinkMarkers = linkMarkers.map(marker=>linkMarkersLabels[marker]);
 
-  linkMarkers &&
-    linkMarkers.forEach((marker, index) => {
-      linkMarkersLabel =
-        linkMarkersLabel +
-        linkMarkersLabels[marker] +
-        (index + 1 !== linkMarkers.length ? ", " : "");
-    });
-
-  return linkMarkers ? linkMarkersLabel : undefined;
+  return formatArrayToSentence(translatedLinkMarkers);
 }

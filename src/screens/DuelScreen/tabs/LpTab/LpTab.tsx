@@ -107,7 +107,7 @@ export function LpTab(props: ILpTabProps) {
             setFormData(newFormData);
             props.setDuelData(newDuelData);
             AccessibilityInfo.announceForAccessibility(
-              "Pontos de vida alterados com sucesso"
+              `Pontos de vida alterados com sucesso. Agora os pontos de vida do ${formData.target === "player1Lp" ? newDuelData.player1Name : newDuelData.player2Name} são de ${newDuelData[formData.target]}`
             );
           } else {
             AccessibilityInfo.announceForAccessibility(

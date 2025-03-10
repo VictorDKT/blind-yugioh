@@ -1,14 +1,9 @@
-export function formatArrayToSentence(items: string[]): string {
-  const allButLast = items.slice(0, -1).join(", ");
-  const lastItem = items[items.length - 1];
+export function formatArrayToSentence(array: string[]): string {
+  let formattedLabel = "";
 
-  if (items.length === 0) {
-    return "";
-  }
+  array.forEach((item, index) => {
+    formattedLabel = formattedLabel + item + (index + 1 === array.length ? "" : index + 2 === array.length ? " e " : ", ");
+  });
 
-  if (items.length === 1) {
-    return items[0];
-  }
-
-  return `${allButLast} e ${lastItem}`;
+  return formattedLabel;
 }
