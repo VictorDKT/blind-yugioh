@@ -39,6 +39,13 @@ export function CardTab(props: CardTab) {
     }
   }, [code])
 
+  useEffect(()=>{
+    if(props.scanned === false) {
+      setCode(null);
+      setEntity(null);
+    }
+  }, [props.scanned])
+
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();

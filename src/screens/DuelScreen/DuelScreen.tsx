@@ -53,6 +53,9 @@ export function DuelScreen(props: ScreenProps) {
               "Ir à tela de leitura de cartas"
             }
             callback={() => {
+              if(tab === "cardData") {
+                setScanned(false);
+              }
               setTab("cardScanner");
             }}
           />
